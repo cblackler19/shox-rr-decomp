@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/encounter/objdiff/main/config.schema.json",
+  "build_target": false,
+  "build_base": false,
+  "watch_patterns": ["*.cpp", "*.h", "*.hpp", "*.s", "*.py", "*.json"],
+  "ignore_patterns": ["build/**/*", "toolchain/**/*", "baserom/**/*", "prototypes/**/*"],
+  "units": [
+    {
+      "name": "retail/text — assembly baseline (inspection only)",
+      "target_path": "build/retail/asm/retail/text.s.o",
+      "metadata": {"auto_generated": false, "complete": false}
+    }
+  ]
+}
