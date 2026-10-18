@@ -1,0 +1,37 @@
+# Original game files
+baserom/
+prototypes/
+*.iso
+*.ISO
+*.ELF
+*.bin
+*.cue
+
+# Proprietary PS2 toolchains
+toolchain/
+
+# Python environments and caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Generated build artifacts
+*.o
+*.obj
+*.exe
+*.map
+*.log
+build/retail/assets/
+build/retail/asm/
+
+# Splat-generated assembly (regenerable)
+asm/retail/
+build/retail/legacy/
+
+# Editor and OS files
+.vs/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

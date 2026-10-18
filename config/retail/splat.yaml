@@ -1,0 +1,45 @@
+name: Shox (retail)
+options:
+  platform: ps2
+  compiler: EEGCC
+  endianness: little
+  basename: SHOX
+  base_path: ../..
+  target_path: baserom/SHOX.ELF
+  elf_path: baserom/SHOX.ELF
+  gp_value: 0x00489C70
+  asm_path: asm/retail
+  src_path: src
+  build_path: build/retail
+  asset_path: build/retail/assets
+  cache_path: build/retail/.splache
+  ld_script_path: build/retail/SHOX.ld
+  undefined_funcs_auto_path: build/retail/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/retail/undefined_syms_auto.txt
+  create_c_files: False
+  subalign: null
+  find_file_boundaries: False
+  migrate_rodata_to_functions: False
+  section_order: ['.text', '.data', '.rodata', '.sdata', '.sbss', '.bss']
+segments:
+  - [0x0, bin, elf_header]
+  - name: main
+    type: code
+    start: 0x1000
+    vram: 0x00100000
+    subsegments:
+      - [0x1000, asm, text]
+      - [0x1D57C4, bin, pad_text_vutext]
+      - [0x1D57D0, bin, vutext]
+      - [0x1DA640, bin, pad_vutext_data]
+      - [0x1DA680, data, data]
+      - [0x346E34, bin, pad_data_rodata]
+      - [0x346E80, rodata, rodata]
+      - [0x382BB8, bin, pad_rodata_except]
+      - [0x382C00, bin, gcc_except_table]
+      - [0x382C5C, bin, pad_except_lit4]
+      - [0x382C80, bin, lit4]
+      - [0x382C84, bin, pad_lit4_sdata]
+      - [0x382D00, data, sdata]
+      - [0x382E44, bin, pad_sdata_end]
+  - [0x382E84]

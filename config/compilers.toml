@@ -1,0 +1,13 @@
+# config/compilers.toml
+
+[compilers.sn_2952_v273a]
+name = "SN ProDG GCC"
+version = "2.95.2-EE"
+build = "v2.73a"
+executable = "toolchain/eegcc_sn_v2.73a/bin/ee-gcc295.exe"
+
+cflags = [
+    "-O2",
+    "-G8",
+    "-fomit-frame-pointer"
+]
