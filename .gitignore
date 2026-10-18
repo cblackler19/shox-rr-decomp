@@ -25,6 +25,12 @@ __pycache__/
 build/retail/assets/
 build/retail/asm/
 
+# linker scripts
+build/retail/SHOX.ld
+build/retail/SHOX-link.ld
+build/retail/SHOX-link-original.ld
+config/retail/text_test.ld
+
 # Splat-generated assembly (regenerable)
 asm/retail/
 build/retail/legacy/
