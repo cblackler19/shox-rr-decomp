@@ -6,6 +6,21 @@ import argparse
 import re
 from pathlib import Path
 
+original = Path("include/labels.inc")
+output = Path("build/retail/legacy/include/labels.inc")
+
+content = original.read_text(encoding="utf-8")
+
+directive = "        .aent \\label\n"
+
+if content.count(directive) != 1:
+    raise RuntimeError("Expected exactly one .aent directive in labels.inc")
+
+content = content.replace(directive, "")
+
+output.parent.mkdir(parents=True, exist_ok=True)
+output.write_text(content, encoding="utf-8", newline="\n")
+
 REGISTERS = {
     "zero": 0, "at": 1,
     "v0": 2, "v1": 3,

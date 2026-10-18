@@ -35,3 +35,6 @@ build/retail/legacy/
 .idea/
 .DS_Store
 Thumbs.db
+
+# misc
+/shox-rr-repro/
