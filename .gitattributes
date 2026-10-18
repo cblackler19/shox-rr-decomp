@@ -1,0 +1,13 @@
+* text=auto
+
+*.py text eol=lf
+*.s text eol=lf
+*.inc text eol=lf
+*.ld text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.txt text eol=lf
+*.md text eol=lf
+
+*.bin binary
+*.ELF binary
