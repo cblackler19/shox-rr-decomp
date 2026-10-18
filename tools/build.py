@@ -25,7 +25,7 @@ ASSETS = BUILD / "assets"
 OBJECTS = BUILD / "asm/retail"
 LEGACY = BUILD / "legacy"
 
-LINKER_SCRIPT = BUILD / "SHOX-layout.ld"
+LINKER_SCRIPT = ROOT / "config/retail/layout.ld"
 OUTPUT_ELF = BUILD / "SHOX-layout.elf"
 OUTPUT_MAP = BUILD / "SHOX-layout.map"
 
