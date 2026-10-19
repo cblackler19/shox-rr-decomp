@@ -34,4 +34,19 @@ build build/objdiff/target/func_002103A0.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_002103A0.o: assemble_reference build/objdiff/target/func_002103A0.s
 build build/objdiff/base/func_002103A0.o: cxx src/retail/func_002103A0.cpp
 
+build build/objdiff/target/unmatched_00100000.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00100000
+  size = 0xAA78
+build build/objdiff/target/unmatched_00100000.o: assemble_reference build/objdiff/target/unmatched_00100000.s
+
+build build/objdiff/target/unmatched_0010AA88.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0010AA88
+  size = 0x105918
+build build/objdiff/target/unmatched_0010AA88.o: assemble_reference build/objdiff/target/unmatched_0010AA88.s
+
+build build/objdiff/target/unmatched_002103AC.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x002103AC
+  size = 0xC4418
+build build/objdiff/target/unmatched_002103AC.o: assemble_reference build/objdiff/target/unmatched_002103AC.s
+
 default build/objdiff/base/func_0010AA78.o build/objdiff/base/func_0010AA80.o build/objdiff/base/func_002103A0.o

@@ -18,6 +18,29 @@ TEXT_SIZE = 0x001D47C4
 NAME_RE = re.compile(r"func_([0-9A-F]{8})")
 
 
+def unmatched_ranges(manifest):
+    """Return retail .text ranges not covered by registered functions."""
+    ranges = sorted(
+        (
+            int(entry["address"], 16),
+            int(entry["address"], 16) + int(entry["size"], 16),
+        )
+        for entry in manifest["functions"]
+    )
+
+    cursor = TEXT_START
+    end = TEXT_START + TEXT_SIZE
+
+    for start, stop in ranges:
+        if cursor < start:
+            yield cursor, start - cursor
+        cursor = stop
+
+    if cursor < end:
+        yield cursor, end - cursor
+
+
+
 def parse_hex(value, field):
     if not isinstance(value, str) or not re.fullmatch(
         r"0[xX][0-9a-fA-F]+", value
@@ -195,6 +218,23 @@ def generate_ninja(manifest):
 
         defaults.append(base_obj)
 
+
+    # Reference-only regions for whole-text progress reporting.
+    for address, size in unmatched_ranges(manifest):
+        name = f"unmatched_{address:08X}"
+        target_asm = f"build/objdiff/target/{name}.s"
+        target_obj = f"build/objdiff/target/{name}.o"
+
+        lines += [
+            f"build {target_asm}: extract_reference baserom/SHOX.ELF "
+            "| tools/objdiff/extract_reference.py",
+            f"  address = 0x{address:08X}",
+            f"  size = 0x{size:X}",
+            f"build {target_obj}: assemble_reference {target_asm}",
+            "",
+        ]
+
+
     if defaults:
         lines.append("default " + " ".join(defaults))
     else:
@@ -217,6 +257,16 @@ def generate_objdiff(manifest):
             "base_path": f"build/objdiff/base/{name}.o",
             "source_path": entry["source"],
         })
+
+
+    for address, size in unmatched_ranges(manifest):
+        name = f"unmatched_{address:08X}"
+
+        units.append({
+            "name": f"retail/{name}",
+            "target_path": f"build/objdiff/target/{name}.o",
+        })
+
 
     result = {
         "$schema": (

@@ -1,0 +1,53 @@
+
+name: ByteMatch Progress
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "reports/retail/report.json"
+      - ".github/workflows/bytematch.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    name: Publish retail progress
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate report
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("reports/retail/report.json")
+          report = json.loads(path.read_text())
+          measures = report["measures"]
+
+          assert report["version"] == 2
+          assert int(measures["total_code"]) == 1918916
+          assert int(measures["matched_code"]) >= 28
+          assert 0 <= measures["matched_code_percent"] <= 100
+
+          print("Retail report validation: PASS")
+          print("Total code:", measures["total_code"])
+          print("Matched code:", measures["matched_code"])
+          print("Progress:", measures["matched_code_percent"])
+          PY
+
+      - name: Upload ByteMatch report
+        uses: actions/upload-artifact@v4
+        with:
+          name: retail_report
+          path: reports/retail/report.json
+          if-no-files-found: error
+          retention-days: 90

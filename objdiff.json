@@ -29,6 +29,18 @@
       "target_path": "build/objdiff/target/func_002103A0.o",
       "base_path": "build/objdiff/base/func_002103A0.o",
       "source_path": "src/retail/func_002103A0.cpp"
+    },
+    {
+      "name": "retail/unmatched_00100000",
+      "target_path": "build/objdiff/target/unmatched_00100000.o"
+    },
+    {
+      "name": "retail/unmatched_0010AA88",
+      "target_path": "build/objdiff/target/unmatched_0010AA88.o"
+    },
+    {
+      "name": "retail/unmatched_002103AC",
+      "target_path": "build/objdiff/target/unmatched_002103AC.o"
     }
   ]
 }
