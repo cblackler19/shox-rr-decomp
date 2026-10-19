@@ -6,20 +6,25 @@ import argparse
 import re
 from pathlib import Path
 
-original = Path("include/labels.inc")
-output = Path("build/retail/legacy/include/labels.inc")
+def generate_legacy_labels(source_path: Path, output_path: Path) -> None:
+    """Generate macro definitions compatible with the legacy PS2 assembler."""
+    content = source_path.read_text(encoding="utf-8")
 
-content = original.read_text(encoding="utf-8")
+    patterns = (
+        r"(?m)^[ \t]*\.ent[ \t]+\\label[ \t]*\n?",
+        r"(?m)^[ \t]*\.aent[ \t]+\\label[ \t]*\n?",
+        r"(?m)^[ \t]*\.end[ \t]+\\label[ \t]*\n?",
+    )
 
-directive = "        .aent \\label\n"
+    for pattern in patterns:
+        content = re.sub(pattern, "", content)
 
-if content.count(directive) != 1:
-    raise RuntimeError("Expected exactly one .aent directive in labels.inc")
-
-content = content.replace(directive, "")
-
-output.parent.mkdir(parents=True, exist_ok=True)
-output.write_text(content, encoding="utf-8", newline="\n")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(
+        content,
+        encoding="utf-8",
+        newline="\n",
+    )
 
 REGISTERS = {
     "zero": 0, "at": 1,
@@ -39,6 +44,51 @@ PATTERN = re.compile(
     r"\$(" + "|".join(REGISTERS.keys()) + r")\b"
 )
 
+ENDLABEL_PATTERN = re.compile(
+    r"(?m)^([ \t]*)endlabel[ \t]+([A-Za-z_.$][\w.$]*)[ \t]*$"
+)
+
+
+def convert_endlabels(source: str) -> str:
+    """Convert Splat endlabel macros into legacy-compatible size directives."""
+    return ENDLABEL_PATTERN.sub(
+        lambda match: (
+            f"{match.group(1)}.size {match.group(2)}, "
+            f". - {match.group(2)}"
+        ),
+        source,
+    )
+
+BAD_RODATA_STRINGS = {
+    "00467B04": "0026AFA8",
+    "0046C45C": "0027D3C8",
+    "0046C464": "0027D4B8",
+}
+
+
+def convert_misidentified_rodata(source: str) -> str:
+    """Restore known 32-bit data misidentified as strings by Splat."""
+
+    for address, expected_word in BAD_RODATA_STRINGS.items():
+        pattern = re.compile(
+            rf'(?m)^([ \t]*/\*\s*[0-9A-Fa-f]{{6}}\s+{address}'
+            rf'\s*\*/\s*)\.asciz\s+".*?"[ \t]*$'
+        )
+
+        source, count = pattern.subn(
+            lambda match: (
+                f"{match.group(1)}.word 0x{expected_word}"
+            ),
+            source,
+        )
+
+        if count != 1:
+            raise ValueError(
+                f"Expected exactly one misidentified rodata entry "
+                f"at 0x{address}, found {count}"
+            )
+
+    return source
 
 def convert(source: str) -> str:
     source = re.sub(
@@ -46,6 +96,8 @@ def convert(source: str) -> str:
         r'\1"labels.inc"',
         source,
     )
+
+    source = convert_endlabels(source)
 
     source = PATTERN.sub(
         lambda match: f"${REGISTERS[match.group(1)]}",
@@ -131,11 +183,18 @@ def main():
     parser.add_argument("output", type=Path)
     args = parser.parse_args()
 
-    text = args.source.read_text(encoding="utf-8")
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_bytes(
-        convert(text).encode("utf-8")
+    generate_legacy_labels(
+        Path("include/labels.inc"),
+        Path("build/retail/legacy/include/labels.inc"),
     )
+
+    text = args.source.read_text(encoding="utf-8")
+
+    if args.source.name == "rodata.rodata.s":
+        text = convert_misidentified_rodata(text)
+
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_bytes(convert(text).encode("utf-8"))
 
 
 if __name__ == "__main__":
