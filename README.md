@@ -7,8 +7,8 @@ A work-in-progress, byte-matching C++ decompilation of **Shox: Rally Reinvented*
 
 The goal is to reconstruct the retail game's code in readable C++ while producing machine code identical to the original using the SN Systems PS2 compiler toolchain. The retail `.text` section has already been reproduced byte-for-byte from assembly; C++ decompilation is still in its early stages.
 
-[!NOTE]
-Decompilation does not necessarily mean a PC port. I currently have no plans to port Shox: Rally Reinvented to modern systems. This project is simply a personal effort to better understand the inner workings of a game I enjoyed growing up with.
+> [!NOTE]
+> Decompilation does not necessarily mean a PC port. I currently have no plans to port Shox: Rally Reinvented to modern systems. This project is simply a personal effort to better understand the inner workings of a game I enjoyed growing up with.
 
 ## Development
 
