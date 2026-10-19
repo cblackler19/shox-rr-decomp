@@ -1,0 +1,12 @@
+
+compiler = toolchain/eegcc_sn_v2.73a/bin/ee-gcc295.exe
+
+cxxflags = -O2 -G8 -mabi=eabi
+
+rule cxx
+  command = $compiler $cxxflags -c -o $out $in
+  description = CXX $in
+
+build build/objdiff/base/func_002103A0.o: cxx src/retail/func_002103A0.cpp
+
+default build/objdiff/base/func_002103A0.o

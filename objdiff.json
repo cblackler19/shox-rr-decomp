@@ -1,0 +1,23 @@
+
+{
+  "$schema": "https://raw.githubusercontent.com/encounter/objdiff/main/config.schema.json",
+  "custom_make": "ninja",
+  "build_target": false,
+  "build_base": true,
+  "watch_patterns": [
+    "src/**/*.cpp",
+    "src/**/*.h",
+    "build.ninja"
+  ],
+  "ignore_patterns": [
+    "build/**/*"
+  ],
+  "units": [
+    {
+      "name": "retail/func_002103A0",
+      "target_path": "build/objdiff/target/func_002103A0.o",
+      "base_path": "build/objdiff/base/func_002103A0.o",
+      "source_path": "src/retail/func_002103A0.cpp"
+    }
+  ]
+}
