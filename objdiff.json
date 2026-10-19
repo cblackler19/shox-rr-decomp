@@ -13,6 +13,18 @@
   ],
   "units": [
     {
+      "name": "retail/func_0010AA78",
+      "target_path": "build/objdiff/target/func_0010AA78.o",
+      "base_path": "build/objdiff/base/func_0010AA78.o",
+      "source_path": "src/retail/func_0010AA78.cpp"
+    },
+    {
+      "name": "retail/func_0010AA80",
+      "target_path": "build/objdiff/target/func_0010AA80.o",
+      "base_path": "build/objdiff/base/func_0010AA80.o",
+      "source_path": "src/retail/func_0010AA80.cpp"
+    },
+    {
       "name": "retail/func_002103A0",
       "target_path": "build/objdiff/target/func_002103A0.o",
       "base_path": "build/objdiff/base/func_002103A0.o",

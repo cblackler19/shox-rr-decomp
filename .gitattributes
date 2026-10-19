@@ -15,3 +15,5 @@
 
 *.bin binary
 *.ELF binary
+
+*.inc linguist-language=C++

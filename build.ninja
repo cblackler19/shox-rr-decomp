@@ -2,11 +2,36 @@
 
 compiler = toolchain/eegcc_sn_v2.73a/bin/ee-gcc295.exe
 cxxflags = -O2 -G8 -mabi=eabi
+assembler = toolchain/eegcc_sn_v2.73a/bin/ee-as.exe
 
 rule cxx
   command = $compiler $cxxflags -c -o $out $in
   description = CXX $in
 
+rule extract_reference
+  command = python tools/objdiff/extract_reference.py $address $size $out
+  description = EXTRACT $out
+
+rule assemble_reference
+  command = $assembler -G8 -mabi=eabi -o $out $in
+  description = ASSEMBLE $in
+
+build build/objdiff/target/func_0010AA78.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0010AA78
+  size = 0x8
+build build/objdiff/target/func_0010AA78.o: assemble_reference build/objdiff/target/func_0010AA78.s
+build build/objdiff/base/func_0010AA78.o: cxx src/retail/func_0010AA78.cpp
+
+build build/objdiff/target/func_0010AA80.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0010AA80
+  size = 0x8
+build build/objdiff/target/func_0010AA80.o: assemble_reference build/objdiff/target/func_0010AA80.s
+build build/objdiff/base/func_0010AA80.o: cxx src/retail/func_0010AA80.cpp
+
+build build/objdiff/target/func_002103A0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x002103A0
+  size = 0xC
+build build/objdiff/target/func_002103A0.o: assemble_reference build/objdiff/target/func_002103A0.s
 build build/objdiff/base/func_002103A0.o: cxx src/retail/func_002103A0.cpp
 
-default build/objdiff/base/func_002103A0.o
+default build/objdiff/base/func_0010AA78.o build/objdiff/base/func_0010AA80.o build/objdiff/base/func_002103A0.o

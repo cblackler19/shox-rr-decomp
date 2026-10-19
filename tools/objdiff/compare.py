@@ -185,6 +185,16 @@ def compare(name: str) -> bool:
     if not OBJDIFF.is_file():
         raise FileNotFoundError(f"Missing objdiff CLI: {OBJDIFF}")
 
+    print(f"Building {name}...", flush=True)
+
+    run([
+        "ninja",
+        "-f",
+        "build.ninja",
+        target.relative_to(ROOT).as_posix(),
+        base.relative_to(ROOT).as_posix(),
+    ])
+
     if not target.is_file():
         raise FileNotFoundError(f"Missing reference object: {target}")
 
