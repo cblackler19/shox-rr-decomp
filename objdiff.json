@@ -1,4 +1,3 @@
-
 {
   "$schema": "https://raw.githubusercontent.com/encounter/objdiff/main/config.schema.json",
   "custom_make": "ninja",

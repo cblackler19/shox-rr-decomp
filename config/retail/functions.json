@@ -1,0 +1,24 @@
+
+{
+  "version": "retail",
+  "text": {
+    "address": "0x00100000",
+    "size": "0x001D47C4"
+  },
+  "compiler": {
+    "executable": "toolchain/eegcc_sn_v2.73a/bin/ee-gcc295.exe",
+    "flags": [
+      "-O2",
+      "-G8",
+      "-mabi=eabi"
+    ]
+  },
+  "functions": [
+    {
+      "name": "func_002103A0",
+      "address": "0x002103A0",
+      "size": "0xC",
+      "source": "src/retail/func_002103A0.cpp"
+    }
+  ]
+}
