@@ -218,22 +218,21 @@ def generate_ninja(manifest):
 
         defaults.append(base_obj)
 
-
-    # Reference-only regions for whole-text progress reporting.
-    for address, size in unmatched_ranges(manifest):
-        name = f"unmatched_{address:08X}"
-        target_asm = f"build/objdiff/target/{name}.s"
-        target_obj = f"build/objdiff/target/{name}.o"
-
-        lines += [
-            f"build {target_asm}: extract_reference baserom/SHOX.ELF "
-            "| tools/objdiff/extract_reference.py",
-            f"  address = 0x{address:08X}",
-            f"  size = 0x{size:X}",
-            f"build {target_obj}: assemble_reference {target_asm}",
-            "",
-        ]
-
+    # Generate one combined reference for all unregistered functions.
+    lines += [
+        "rule generate_inventory",
+        "  command = python tools/objdiff/build_inventory.py $out",
+        "  description = INVENTORY $out",
+        "",
+        "build build/objdiff/target/retail_inventory.s: "
+        "generate_inventory asm/retail/text.s "
+        "baserom/SHOX.ELF config/retail/functions.json "
+        "| tools/objdiff/build_inventory.py",
+        "",
+        "build build/objdiff/target/retail_inventory.o: "
+        "assemble_reference build/objdiff/target/retail_inventory.s",
+        "",
+    ]
 
     if defaults:
         lines.append("default " + " ".join(defaults))
@@ -259,13 +258,10 @@ def generate_objdiff(manifest):
         })
 
 
-    for address, size in unmatched_ranges(manifest):
-        name = f"unmatched_{address:08X}"
-
-        units.append({
-            "name": f"retail/{name}",
-            "target_path": f"build/objdiff/target/{name}.o",
-        })
+    units.append({
+        "name": "retail/undecompiled",
+        "target_path": "build/objdiff/target/retail_inventory.o",
+    })
 
 
     result = {

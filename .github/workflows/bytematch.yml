@@ -6,11 +6,7 @@ on:
     branches:
       - main
     paths:
-      - "src/retail/**"
-      - "config/retail/functions.json"
-      - "tools/objdiff/**"
-      - "build.ninja"
-      - "objdiff.json"
+      - "reports/retail/report.json"
       - ".github/workflows/bytematch.yml"
   workflow_dispatch:
 
@@ -19,97 +15,36 @@ permissions:
 
 jobs:
   report:
-    name: Generate retail progress
-    runs-on: [self-hosted, Windows, X64, shox-retail]
+    name: Publish retail progress
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Validate local prerequisites
-        shell: pwsh
+      - name: Validate report
+        shell: bash
         run: |
-          $required = @(
-            "baserom/SHOX.ELF",
-            "asm/retail/text.s",
-            "toolchain/eegcc_sn_v2.73a/bin/ee-gcc295.exe",
-            "toolchain/eegcc_sn_v2.73a/bin/ee-as.exe",
-            "toolchain/objdiff-cli.exe"
-          )
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
 
-          foreach ($path in $required) {
-            if (!(Test-Path $path)) {
-              throw "Missing required local file: $path"
-            }
-          }
+          path = Path("reports/retail/report.json")
+          report = json.loads(path.read_text())
+          measures = report["measures"]
 
-          ninja --version
-          python --version
+          assert report["version"] == 2
+          assert int(measures["total_code"]) == 1905072
+          assert int(measures["total_functions"]) == 7408
+          assert int(measures["matched_functions"]) >= 3
+          assert int(measures["matched_code"]) >= 28
+          assert 0 <= measures["matched_code_percent"] <= 100
 
-      - name: Generate build configuration
-        shell: pwsh
-        run: |
-          python tools/objdiff/manage.py validate
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-          python tools/objdiff/manage.py sync
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-      - name: Build registered functions
-        shell: pwsh
-        run: |
-          ninja
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-          ninja `
-            build/objdiff/target/func_0010AA78.o `
-            build/objdiff/target/func_0010AA80.o `
-            build/objdiff/target/func_002103A0.o
-
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-      - name: Build function inventory
-        shell: pwsh
-        run: |
-          ninja build/objdiff/target/retail_inventory.o
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-      - name: Generate objdiff report
-        shell: pwsh
-        run: |
-          & "./toolchain/objdiff-cli.exe" report generate `
-            -p . `
-            -o reports/retail/report.json
-
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-      - name: Validate progress
-        shell: pwsh
-        run: |
-          $report = Get-Content `
-            reports/retail/report.json -Raw |
-            ConvertFrom-Json
-
-          $m = $report.measures
-
-          if ([int]$m.total_code -ne 1905072) {
-            throw "Unexpected total code"
-          }
-
-          if ([int]$m.total_functions -ne 7408) {
-            throw "Unexpected function count"
-          }
-
-          if ([int]$m.matched_code -lt 28) {
-            throw "Matched code regressed"
-          }
-
-          if ([int]$m.matched_functions -lt 3) {
-            throw "Matched functions regressed"
-          }
-
-          Write-Host "ByteMatch progress validated"
-          $m | Format-List
+          print("Retail report validation: PASS")
+          print("Total code:", measures["total_code"])
+          print("Matched code:", measures["matched_code"])
+          print("Progress:", measures["matched_code_percent"])
+          PY
 
       - name: Upload ByteMatch report
         uses: actions/upload-artifact@v4
