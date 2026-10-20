@@ -34,7 +34,9 @@ jobs:
           measures = report["measures"]
 
           assert report["version"] == 2
-          assert int(measures["total_code"]) == 1918916
+          assert int(measures["total_code"]) == 1905072
+          assert int(measures["total_functions"]) == 7408
+          assert int(measures["matched_functions"]) >= 3
           assert int(measures["matched_code"]) >= 28
           assert 0 <= measures["matched_code_percent"] <= 100
 
