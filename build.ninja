@@ -76,6 +76,18 @@ build build/objdiff/target/func_00100EA8.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00100EA8.o: assemble_reference build/objdiff/target/func_00100EA8.s
 build build/objdiff/base/func_00100EA8.o: cxx src/retail/func_00100EA8.cpp
 
+build build/objdiff/target/func_00100F20.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00100F20
+  size = 0x44
+build build/objdiff/target/func_00100F20.o: assemble_reference build/objdiff/target/func_00100F20.s
+build build/objdiff/base/func_00100F20.o: cxx src/retail/func_00100F20.cpp
+
+build build/objdiff/target/func_00100F68.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00100F68
+  size = 0x38
+build build/objdiff/target/func_00100F68.o: assemble_reference build/objdiff/target/func_00100F68.s
+build build/objdiff/base/func_00100F68.o: cxx src/retail/func_00100F68.cpp
+
 build build/objdiff/target/func_001025E0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001025E0
   size = 0x40
@@ -130,6 +142,12 @@ build build/objdiff/target/func_00102B70.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00102B70.o: assemble_reference build/objdiff/target/func_00102B70.s
 build build/objdiff/base/func_00102B70.o: cxx src/retail/func_00102B70.cpp
 
+build build/objdiff/target/func_00103120.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00103120
+  size = 0x40
+build build/objdiff/target/func_00103120.o: assemble_reference build/objdiff/target/func_00103120.s
+build build/objdiff/base/func_00103120.o: cxx src/retail/func_00103120.cpp
+
 build build/objdiff/target/func_00103168.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00103168
   size = 0x2C
@@ -142,6 +160,12 @@ build build/objdiff/target/func_00103198.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00103198.o: assemble_reference build/objdiff/target/func_00103198.s
 build build/objdiff/base/func_00103198.o: cxx src/retail/func_00103198.cpp
 
+build build/objdiff/target/func_001031F8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001031F8
+  size = 0x50
+build build/objdiff/target/func_001031F8.o: assemble_reference build/objdiff/target/func_001031F8.s
+build build/objdiff/base/func_001031F8.o: cxx src/retail/func_001031F8.cpp
+
 build build/objdiff/target/func_001037C0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001037C0
   size = 0x20
@@ -153,6 +177,12 @@ build build/objdiff/target/func_001037E0.s: extract_reference baserom/SHOX.ELF |
   size = 0x30
 build build/objdiff/target/func_001037E0.o: assemble_reference build/objdiff/target/func_001037E0.s
 build build/objdiff/base/func_001037E0.o: cxx src/retail/func_001037E0.cpp
+
+build build/objdiff/target/func_00103C08.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00103C08
+  size = 0x40
+build build/objdiff/target/func_00103C08.o: assemble_reference build/objdiff/target/func_00103C08.s
+build build/objdiff/base/func_00103C08.o: cxx src/retail/func_00103C08.cpp
 
 build build/objdiff/target/func_00103D28.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00103D28
@@ -172,6 +202,30 @@ build build/objdiff/target/func_00104080.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00104080.o: assemble_reference build/objdiff/target/func_00104080.s
 build build/objdiff/base/func_00104080.o: cxx src/retail/func_00104080.cpp
 
+build build/objdiff/target/func_00105320.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00105320
+  size = 0x50
+build build/objdiff/target/func_00105320.o: assemble_reference build/objdiff/target/func_00105320.s
+build build/objdiff/base/func_00105320.o: cxx src/retail/func_00105320.cpp
+
+build build/objdiff/target/func_00105370.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00105370
+  size = 0x50
+build build/objdiff/target/func_00105370.o: assemble_reference build/objdiff/target/func_00105370.s
+build build/objdiff/base/func_00105370.o: cxx src/retail/func_00105370.cpp
+
+build build/objdiff/target/func_001053C0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001053C0
+  size = 0x50
+build build/objdiff/target/func_001053C0.o: assemble_reference build/objdiff/target/func_001053C0.s
+build build/objdiff/base/func_001053C0.o: cxx src/retail/func_001053C0.cpp
+
+build build/objdiff/target/func_001054A8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001054A8
+  size = 0x24
+build build/objdiff/target/func_001054A8.o: assemble_reference build/objdiff/target/func_001054A8.s
+build build/objdiff/base/func_001054A8.o: cxx src/retail/func_001054A8.cpp
+
 build build/objdiff/target/func_00105600.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00105600
   size = 0x3C
@@ -190,11 +244,23 @@ build build/objdiff/target/func_00105680.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00105680.o: assemble_reference build/objdiff/target/func_00105680.s
 build build/objdiff/base/func_00105680.o: cxx src/retail/func_00105680.cpp
 
+build build/objdiff/target/func_00105800.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00105800
+  size = 0x40
+build build/objdiff/target/func_00105800.o: assemble_reference build/objdiff/target/func_00105800.s
+build build/objdiff/base/func_00105800.o: cxx src/retail/func_00105800.cpp
+
 build build/objdiff/target/func_00107698.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00107698
   size = 0x28
 build build/objdiff/target/func_00107698.o: assemble_reference build/objdiff/target/func_00107698.s
 build build/objdiff/base/func_00107698.o: cxx src/retail/func_00107698.cpp
+
+build build/objdiff/target/func_001078F0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001078F0
+  size = 0x24
+build build/objdiff/target/func_001078F0.o: assemble_reference build/objdiff/target/func_001078F0.s
+build build/objdiff/base/func_001078F0.o: cxx src/retail/func_001078F0.cpp
 
 build build/objdiff/target/func_001079D8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001079D8
@@ -238,17 +304,53 @@ build build/objdiff/target/func_00108208.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00108208.o: assemble_reference build/objdiff/target/func_00108208.s
 build build/objdiff/base/func_00108208.o: cxx src/retail/func_00108208.cpp
 
+build build/objdiff/target/func_001083B0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001083B0
+  size = 0x2C
+build build/objdiff/target/func_001083B0.o: assemble_reference build/objdiff/target/func_001083B0.s
+build build/objdiff/base/func_001083B0.o: cxx src/retail/func_001083B0.cpp
+
 build build/objdiff/target/func_00108F50.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00108F50
   size = 0x8
 build build/objdiff/target/func_00108F50.o: assemble_reference build/objdiff/target/func_00108F50.s
 build build/objdiff/base/func_00108F50.o: cxx src/retail/func_00108F50.cpp
 
+build build/objdiff/target/func_00109080.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00109080
+  size = 0x3C
+build build/objdiff/target/func_00109080.o: assemble_reference build/objdiff/target/func_00109080.s
+build build/objdiff/base/func_00109080.o: cxx src/retail/func_00109080.cpp
+
+build build/objdiff/target/func_00109238.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00109238
+  size = 0x24
+build build/objdiff/target/func_00109238.o: assemble_reference build/objdiff/target/func_00109238.s
+build build/objdiff/base/func_00109238.o: cxx src/retail/func_00109238.cpp
+
+build build/objdiff/target/func_001096B0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001096B0
+  size = 0x24
+build build/objdiff/target/func_001096B0.o: assemble_reference build/objdiff/target/func_001096B0.s
+build build/objdiff/base/func_001096B0.o: cxx src/retail/func_001096B0.cpp
+
+build build/objdiff/target/func_0010A3E0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0010A3E0
+  size = 0x24
+build build/objdiff/target/func_0010A3E0.o: assemble_reference build/objdiff/target/func_0010A3E0.s
+build build/objdiff/base/func_0010A3E0.o: cxx src/retail/func_0010A3E0.cpp
+
 build build/objdiff/target/func_0010A4A8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0010A4A8
   size = 0x10
 build build/objdiff/target/func_0010A4A8.o: assemble_reference build/objdiff/target/func_0010A4A8.s
 build build/objdiff/base/func_0010A4A8.o: cxx src/retail/func_0010A4A8.cpp
+
+build build/objdiff/target/func_0010A668.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0010A668
+  size = 0x38
+build build/objdiff/target/func_0010A668.o: assemble_reference build/objdiff/target/func_0010A668.s
+build build/objdiff/base/func_0010A668.o: cxx src/retail/func_0010A668.cpp
 
 build build/objdiff/target/func_0010A6A0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0010A6A0
@@ -370,11 +472,23 @@ build build/objdiff/target/func_0010C430.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_0010C430.o: assemble_reference build/objdiff/target/func_0010C430.s
 build build/objdiff/base/func_0010C430.o: cxx src/retail/func_0010C430.cpp
 
+build build/objdiff/target/func_0010C9B0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0010C9B0
+  size = 0x38
+build build/objdiff/target/func_0010C9B0.o: assemble_reference build/objdiff/target/func_0010C9B0.s
+build build/objdiff/base/func_0010C9B0.o: cxx src/retail/func_0010C9B0.cpp
+
 build build/objdiff/target/func_0010CC58.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0010CC58
   size = 0x8
 build build/objdiff/target/func_0010CC58.o: assemble_reference build/objdiff/target/func_0010CC58.s
 build build/objdiff/base/func_0010CC58.o: cxx src/retail/func_0010CC58.cpp
+
+build build/objdiff/target/func_0010D8C8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0010D8C8
+  size = 0x20
+build build/objdiff/target/func_0010D8C8.o: assemble_reference build/objdiff/target/func_0010D8C8.s
+build build/objdiff/base/func_0010D8C8.o: cxx src/retail/func_0010D8C8.cpp
 
 build build/objdiff/target/func_0010D8E8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0010D8E8
@@ -394,6 +508,18 @@ build build/objdiff/target/func_0010D8F8.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_0010D8F8.o: assemble_reference build/objdiff/target/func_0010D8F8.s
 build build/objdiff/base/func_0010D8F8.o: cxx src/retail/func_0010D8F8.cpp
 
+build build/objdiff/target/func_0010DB50.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0010DB50
+  size = 0x20
+build build/objdiff/target/func_0010DB50.o: assemble_reference build/objdiff/target/func_0010DB50.s
+build build/objdiff/base/func_0010DB50.o: cxx src/retail/func_0010DB50.cpp
+
+build build/objdiff/target/func_0010DB70.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0010DB70
+  size = 0x20
+build build/objdiff/target/func_0010DB70.o: assemble_reference build/objdiff/target/func_0010DB70.s
+build build/objdiff/base/func_0010DB70.o: cxx src/retail/func_0010DB70.cpp
+
 build build/objdiff/target/func_0010DF50.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0010DF50
   size = 0x8
@@ -411,6 +537,12 @@ build build/objdiff/target/func_0010E6A8.s: extract_reference baserom/SHOX.ELF |
   size = 0x8
 build build/objdiff/target/func_0010E6A8.o: assemble_reference build/objdiff/target/func_0010E6A8.s
 build build/objdiff/base/func_0010E6A8.o: cxx src/retail/func_0010E6A8.cpp
+
+build build/objdiff/target/func_0010F480.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0010F480
+  size = 0x3C
+build build/objdiff/target/func_0010F480.o: assemble_reference build/objdiff/target/func_0010F480.s
+build build/objdiff/base/func_0010F480.o: cxx src/retail/func_0010F480.cpp
 
 build build/objdiff/target/func_0010F4C0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0010F4C0
@@ -430,11 +562,29 @@ build build/objdiff/target/func_0010F8B0.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_0010F8B0.o: assemble_reference build/objdiff/target/func_0010F8B0.s
 build build/objdiff/base/func_0010F8B0.o: cxx src/retail/func_0010F8B0.cpp
 
+build build/objdiff/target/func_0010F940.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0010F940
+  size = 0x20
+build build/objdiff/target/func_0010F940.o: assemble_reference build/objdiff/target/func_0010F940.s
+build build/objdiff/base/func_0010F940.o: cxx src/retail/func_0010F940.cpp
+
 build build/objdiff/target/func_0010F960.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0010F960
   size = 0xC
 build build/objdiff/target/func_0010F960.o: assemble_reference build/objdiff/target/func_0010F960.s
 build build/objdiff/base/func_0010F960.o: cxx src/retail/func_0010F960.cpp
+
+build build/objdiff/target/func_001110D0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001110D0
+  size = 0x3C
+build build/objdiff/target/func_001110D0.o: assemble_reference build/objdiff/target/func_001110D0.s
+build build/objdiff/base/func_001110D0.o: cxx src/retail/func_001110D0.cpp
+
+build build/objdiff/target/func_001112A8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001112A8
+  size = 0x44
+build build/objdiff/target/func_001112A8.o: assemble_reference build/objdiff/target/func_001112A8.s
+build build/objdiff/base/func_001112A8.o: cxx src/retail/func_001112A8.cpp
 
 build build/objdiff/target/func_001112F0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001112F0
@@ -448,6 +598,12 @@ build build/objdiff/target/func_001113B8.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_001113B8.o: assemble_reference build/objdiff/target/func_001113B8.s
 build build/objdiff/base/func_001113B8.o: cxx src/retail/func_001113B8.cpp
 
+build build/objdiff/target/func_001113C8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001113C8
+  size = 0x4C
+build build/objdiff/target/func_001113C8.o: assemble_reference build/objdiff/target/func_001113C8.s
+build build/objdiff/base/func_001113C8.o: cxx src/retail/func_001113C8.cpp
+
 build build/objdiff/target/func_001114A8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001114A8
   size = 0x1C
@@ -459,6 +615,24 @@ build build/objdiff/target/func_001115A0.s: extract_reference baserom/SHOX.ELF |
   size = 0x2C
 build build/objdiff/target/func_001115A0.o: assemble_reference build/objdiff/target/func_001115A0.s
 build build/objdiff/base/func_001115A0.o: cxx src/retail/func_001115A0.cpp
+
+build build/objdiff/target/func_001117C8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001117C8
+  size = 0x24
+build build/objdiff/target/func_001117C8.o: assemble_reference build/objdiff/target/func_001117C8.s
+build build/objdiff/base/func_001117C8.o: cxx src/retail/func_001117C8.cpp
+
+build build/objdiff/target/func_001118F0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001118F0
+  size = 0x20
+build build/objdiff/target/func_001118F0.o: assemble_reference build/objdiff/target/func_001118F0.s
+build build/objdiff/base/func_001118F0.o: cxx src/retail/func_001118F0.cpp
+
+build build/objdiff/target/func_00111910.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00111910
+  size = 0x20
+build build/objdiff/target/func_00111910.o: assemble_reference build/objdiff/target/func_00111910.s
+build build/objdiff/base/func_00111910.o: cxx src/retail/func_00111910.cpp
 
 build build/objdiff/target/func_001124F8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001124F8
@@ -477,6 +651,12 @@ build build/objdiff/target/func_00112568.s: extract_reference baserom/SHOX.ELF |
   size = 0x10
 build build/objdiff/target/func_00112568.o: assemble_reference build/objdiff/target/func_00112568.s
 build build/objdiff/base/func_00112568.o: cxx src/retail/func_00112568.cpp
+
+build build/objdiff/target/func_00112578.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00112578
+  size = 0x3C
+build build/objdiff/target/func_00112578.o: assemble_reference build/objdiff/target/func_00112578.s
+build build/objdiff/base/func_00112578.o: cxx src/retail/func_00112578.cpp
 
 build build/objdiff/target/func_001125B8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001125B8
@@ -507,6 +687,12 @@ build build/objdiff/target/func_001125E0.s: extract_reference baserom/SHOX.ELF |
   size = 0x8
 build build/objdiff/target/func_001125E0.o: assemble_reference build/objdiff/target/func_001125E0.s
 build build/objdiff/base/func_001125E0.o: cxx src/retail/func_001125E0.cpp
+
+build build/objdiff/target/func_001125E8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001125E8
+  size = 0x4C
+build build/objdiff/target/func_001125E8.o: assemble_reference build/objdiff/target/func_001125E8.s
+build build/objdiff/base/func_001125E8.o: cxx src/retail/func_001125E8.cpp
 
 build build/objdiff/target/func_00112B10.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00112B10
@@ -586,11 +772,23 @@ build build/objdiff/target/func_001134A0.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_001134A0.o: assemble_reference build/objdiff/target/func_001134A0.s
 build build/objdiff/base/func_001134A0.o: cxx src/retail/func_001134A0.cpp
 
+build build/objdiff/target/func_00113788.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00113788
+  size = 0x2C
+build build/objdiff/target/func_00113788.o: assemble_reference build/objdiff/target/func_00113788.s
+build build/objdiff/base/func_00113788.o: cxx src/retail/func_00113788.cpp
+
 build build/objdiff/target/func_001137B8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001137B8
   size = 0x8
 build build/objdiff/target/func_001137B8.o: assemble_reference build/objdiff/target/func_001137B8.s
 build build/objdiff/base/func_001137B8.o: cxx src/retail/func_001137B8.cpp
+
+build build/objdiff/target/func_001165E0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001165E0
+  size = 0x1C
+build build/objdiff/target/func_001165E0.o: assemble_reference build/objdiff/target/func_001165E0.s
+build build/objdiff/base/func_001165E0.o: cxx src/retail/func_001165E0.cpp
 
 build build/objdiff/target/func_00116D50.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00116D50
@@ -604,11 +802,23 @@ build build/objdiff/target/func_00116ED0.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00116ED0.o: assemble_reference build/objdiff/target/func_00116ED0.s
 build build/objdiff/base/func_00116ED0.o: cxx src/retail/func_00116ED0.cpp
 
+build build/objdiff/target/func_00117190.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00117190
+  size = 0x20
+build build/objdiff/target/func_00117190.o: assemble_reference build/objdiff/target/func_00117190.s
+build build/objdiff/base/func_00117190.o: cxx src/retail/func_00117190.cpp
+
 build build/objdiff/target/func_00117420.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00117420
   size = 0x10
 build build/objdiff/target/func_00117420.o: assemble_reference build/objdiff/target/func_00117420.s
 build build/objdiff/base/func_00117420.o: cxx src/retail/func_00117420.cpp
+
+build build/objdiff/target/func_00117B70.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00117B70
+  size = 0x20
+build build/objdiff/target/func_00117B70.o: assemble_reference build/objdiff/target/func_00117B70.s
+build build/objdiff/base/func_00117B70.o: cxx src/retail/func_00117B70.cpp
 
 build build/objdiff/target/func_001181A8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001181A8
@@ -622,11 +832,41 @@ build build/objdiff/target/func_001187F8.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_001187F8.o: assemble_reference build/objdiff/target/func_001187F8.s
 build build/objdiff/base/func_001187F8.o: cxx src/retail/func_001187F8.cpp
 
+build build/objdiff/target/func_00118800.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00118800
+  size = 0x8
+build build/objdiff/target/func_00118800.o: assemble_reference build/objdiff/target/func_00118800.s
+build build/objdiff/base/func_00118800.o: cxx src/retail/func_00118800.cpp
+
+build build/objdiff/target/func_00118A50.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00118A50
+  size = 0x1C
+build build/objdiff/target/func_00118A50.o: assemble_reference build/objdiff/target/func_00118A50.s
+build build/objdiff/base/func_00118A50.o: cxx src/retail/func_00118A50.cpp
+
 build build/objdiff/target/func_00118AD8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00118AD8
   size = 0x8
 build build/objdiff/target/func_00118AD8.o: assemble_reference build/objdiff/target/func_00118AD8.s
 build build/objdiff/base/func_00118AD8.o: cxx src/retail/func_00118AD8.cpp
+
+build build/objdiff/target/func_00118AE0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00118AE0
+  size = 0x8
+build build/objdiff/target/func_00118AE0.o: assemble_reference build/objdiff/target/func_00118AE0.s
+build build/objdiff/base/func_00118AE0.o: cxx src/retail/func_00118AE0.cpp
+
+build build/objdiff/target/func_00118C98.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00118C98
+  size = 0x20
+build build/objdiff/target/func_00118C98.o: assemble_reference build/objdiff/target/func_00118C98.s
+build build/objdiff/base/func_00118C98.o: cxx src/retail/func_00118C98.cpp
+
+build build/objdiff/target/func_00118CB8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00118CB8
+  size = 0x20
+build build/objdiff/target/func_00118CB8.o: assemble_reference build/objdiff/target/func_00118CB8.s
+build build/objdiff/base/func_00118CB8.o: cxx src/retail/func_00118CB8.cpp
 
 build build/objdiff/target/func_00119468.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00119468
@@ -645,6 +885,48 @@ build build/objdiff/target/func_00119818.s: extract_reference baserom/SHOX.ELF |
   size = 0x20
 build build/objdiff/target/func_00119818.o: assemble_reference build/objdiff/target/func_00119818.s
 build build/objdiff/base/func_00119818.o: cxx src/retail/func_00119818.cpp
+
+build build/objdiff/target/func_00119B18.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00119B18
+  size = 0x20
+build build/objdiff/target/func_00119B18.o: assemble_reference build/objdiff/target/func_00119B18.s
+build build/objdiff/base/func_00119B18.o: cxx src/retail/func_00119B18.cpp
+
+build build/objdiff/target/func_00119C28.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00119C28
+  size = 0x1C
+build build/objdiff/target/func_00119C28.o: assemble_reference build/objdiff/target/func_00119C28.s
+build build/objdiff/base/func_00119C28.o: cxx src/retail/func_00119C28.cpp
+
+build build/objdiff/target/func_0011E768.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0011E768
+  size = 0x20
+build build/objdiff/target/func_0011E768.o: assemble_reference build/objdiff/target/func_0011E768.s
+build build/objdiff/base/func_0011E768.o: cxx src/retail/func_0011E768.cpp
+
+build build/objdiff/target/func_0011E788.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0011E788
+  size = 0x20
+build build/objdiff/target/func_0011E788.o: assemble_reference build/objdiff/target/func_0011E788.s
+build build/objdiff/base/func_0011E788.o: cxx src/retail/func_0011E788.cpp
+
+build build/objdiff/target/func_0011E898.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0011E898
+  size = 0x20
+build build/objdiff/target/func_0011E898.o: assemble_reference build/objdiff/target/func_0011E898.s
+build build/objdiff/base/func_0011E898.o: cxx src/retail/func_0011E898.cpp
+
+build build/objdiff/target/func_0011EF68.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0011EF68
+  size = 0x20
+build build/objdiff/target/func_0011EF68.o: assemble_reference build/objdiff/target/func_0011EF68.s
+build build/objdiff/base/func_0011EF68.o: cxx src/retail/func_0011EF68.cpp
+
+build build/objdiff/target/func_0011F158.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0011F158
+  size = 0x20
+build build/objdiff/target/func_0011F158.o: assemble_reference build/objdiff/target/func_0011F158.s
+build build/objdiff/base/func_0011F158.o: cxx src/retail/func_0011F158.cpp
 
 build build/objdiff/target/func_0011F180.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0011F180
@@ -700,6 +982,30 @@ build build/objdiff/target/func_00120910.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00120910.o: assemble_reference build/objdiff/target/func_00120910.s
 build build/objdiff/base/func_00120910.o: cxx src/retail/func_00120910.cpp
 
+build build/objdiff/target/func_00123330.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00123330
+  size = 0x20
+build build/objdiff/target/func_00123330.o: assemble_reference build/objdiff/target/func_00123330.s
+build build/objdiff/base/func_00123330.o: cxx src/retail/func_00123330.cpp
+
+build build/objdiff/target/func_00123350.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00123350
+  size = 0x1C
+build build/objdiff/target/func_00123350.o: assemble_reference build/objdiff/target/func_00123350.s
+build build/objdiff/base/func_00123350.o: cxx src/retail/func_00123350.cpp
+
+build build/objdiff/target/func_00123370.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00123370
+  size = 0x1C
+build build/objdiff/target/func_00123370.o: assemble_reference build/objdiff/target/func_00123370.s
+build build/objdiff/base/func_00123370.o: cxx src/retail/func_00123370.cpp
+
+build build/objdiff/target/func_00123390.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00123390
+  size = 0x1C
+build build/objdiff/target/func_00123390.o: assemble_reference build/objdiff/target/func_00123390.s
+build build/objdiff/base/func_00123390.o: cxx src/retail/func_00123390.cpp
+
 build build/objdiff/target/func_001233B0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001233B0
   size = 0x14
@@ -711,6 +1017,18 @@ build build/objdiff/target/func_001233C8.s: extract_reference baserom/SHOX.ELF |
   size = 0x8
 build build/objdiff/target/func_001233C8.o: assemble_reference build/objdiff/target/func_001233C8.s
 build build/objdiff/base/func_001233C8.o: cxx src/retail/func_001233C8.cpp
+
+build build/objdiff/target/func_00123418.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00123418
+  size = 0x1C
+build build/objdiff/target/func_00123418.o: assemble_reference build/objdiff/target/func_00123418.s
+build build/objdiff/base/func_00123418.o: cxx src/retail/func_00123418.cpp
+
+build build/objdiff/target/func_001236E8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001236E8
+  size = 0x20
+build build/objdiff/target/func_001236E8.o: assemble_reference build/objdiff/target/func_001236E8.s
+build build/objdiff/base/func_001236E8.o: cxx src/retail/func_001236E8.cpp
 
 build build/objdiff/target/func_00125C28.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00125C28
@@ -730,6 +1048,18 @@ build build/objdiff/target/func_00125D70.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00125D70.o: assemble_reference build/objdiff/target/func_00125D70.s
 build build/objdiff/base/func_00125D70.o: cxx src/retail/func_00125D70.cpp
 
+build build/objdiff/target/func_00125D80.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00125D80
+  size = 0x1C
+build build/objdiff/target/func_00125D80.o: assemble_reference build/objdiff/target/func_00125D80.s
+build build/objdiff/base/func_00125D80.o: cxx src/retail/func_00125D80.cpp
+
+build build/objdiff/target/func_00125DD0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00125DD0
+  size = 0x20
+build build/objdiff/target/func_00125DD0.o: assemble_reference build/objdiff/target/func_00125DD0.s
+build build/objdiff/base/func_00125DD0.o: cxx src/retail/func_00125DD0.cpp
+
 build build/objdiff/target/func_00125DF0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00125DF0
   size = 0xC
@@ -748,11 +1078,23 @@ build build/objdiff/target/func_00125EE0.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00125EE0.o: assemble_reference build/objdiff/target/func_00125EE0.s
 build build/objdiff/base/func_00125EE0.o: cxx src/retail/func_00125EE0.cpp
 
+build build/objdiff/target/func_00125EF0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00125EF0
+  size = 0x20
+build build/objdiff/target/func_00125EF0.o: assemble_reference build/objdiff/target/func_00125EF0.s
+build build/objdiff/base/func_00125EF0.o: cxx src/retail/func_00125EF0.cpp
+
 build build/objdiff/target/func_00128A38.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00128A38
   size = 0x8
 build build/objdiff/target/func_00128A38.o: assemble_reference build/objdiff/target/func_00128A38.s
 build build/objdiff/base/func_00128A38.o: cxx src/retail/func_00128A38.cpp
+
+build build/objdiff/target/func_00128AC8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00128AC8
+  size = 0x1C
+build build/objdiff/target/func_00128AC8.o: assemble_reference build/objdiff/target/func_00128AC8.s
+build build/objdiff/base/func_00128AC8.o: cxx src/retail/func_00128AC8.cpp
 
 build build/objdiff/target/func_00128AF8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00128AF8
@@ -796,6 +1138,18 @@ build build/objdiff/target/func_00128DE0.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00128DE0.o: assemble_reference build/objdiff/target/func_00128DE0.s
 build build/objdiff/base/func_00128DE0.o: cxx src/retail/func_00128DE0.cpp
 
+build build/objdiff/target/func_00128E60.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00128E60
+  size = 0x1C
+build build/objdiff/target/func_00128E60.o: assemble_reference build/objdiff/target/func_00128E60.s
+build build/objdiff/base/func_00128E60.o: cxx src/retail/func_00128E60.cpp
+
+build build/objdiff/target/func_00128E80.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00128E80
+  size = 0x1C
+build build/objdiff/target/func_00128E80.o: assemble_reference build/objdiff/target/func_00128E80.s
+build build/objdiff/base/func_00128E80.o: cxx src/retail/func_00128E80.cpp
+
 build build/objdiff/target/func_00128EA0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00128EA0
   size = 0x8
@@ -838,6 +1192,12 @@ build build/objdiff/target/func_001291C8.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_001291C8.o: assemble_reference build/objdiff/target/func_001291C8.s
 build build/objdiff/base/func_001291C8.o: cxx src/retail/func_001291C8.cpp
 
+build build/objdiff/target/func_0012A9D0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0012A9D0
+  size = 0x1C
+build build/objdiff/target/func_0012A9D0.o: assemble_reference build/objdiff/target/func_0012A9D0.s
+build build/objdiff/base/func_0012A9D0.o: cxx src/retail/func_0012A9D0.cpp
+
 build build/objdiff/target/func_0012ABD0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0012ABD0
   size = 0x14
@@ -862,6 +1222,24 @@ build build/objdiff/target/func_0012E208.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_0012E208.o: assemble_reference build/objdiff/target/func_0012E208.s
 build build/objdiff/base/func_0012E208.o: cxx src/retail/func_0012E208.cpp
 
+build build/objdiff/target/func_0012E288.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0012E288
+  size = 0x1C
+build build/objdiff/target/func_0012E288.o: assemble_reference build/objdiff/target/func_0012E288.s
+build build/objdiff/base/func_0012E288.o: cxx src/retail/func_0012E288.cpp
+
+build build/objdiff/target/func_0012E2A8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0012E2A8
+  size = 0x1C
+build build/objdiff/target/func_0012E2A8.o: assemble_reference build/objdiff/target/func_0012E2A8.s
+build build/objdiff/base/func_0012E2A8.o: cxx src/retail/func_0012E2A8.cpp
+
+build build/objdiff/target/func_0012E2C8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0012E2C8
+  size = 0x1C
+build build/objdiff/target/func_0012E2C8.o: assemble_reference build/objdiff/target/func_0012E2C8.s
+build build/objdiff/base/func_0012E2C8.o: cxx src/retail/func_0012E2C8.cpp
+
 build build/objdiff/target/func_0012F350.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0012F350
   size = 0x14
@@ -880,11 +1258,35 @@ build build/objdiff/target/func_0012F410.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_0012F410.o: assemble_reference build/objdiff/target/func_0012F410.s
 build build/objdiff/base/func_0012F410.o: cxx src/retail/func_0012F410.cpp
 
+build build/objdiff/target/func_00130918.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00130918
+  size = 0x20
+build build/objdiff/target/func_00130918.o: assemble_reference build/objdiff/target/func_00130918.s
+build build/objdiff/base/func_00130918.o: cxx src/retail/func_00130918.cpp
+
+build build/objdiff/target/func_00138DA0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00138DA0
+  size = 0x20
+build build/objdiff/target/func_00138DA0.o: assemble_reference build/objdiff/target/func_00138DA0.s
+build build/objdiff/base/func_00138DA0.o: cxx src/retail/func_00138DA0.cpp
+
 build build/objdiff/target/func_001390B0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001390B0
   size = 0x1C
 build build/objdiff/target/func_001390B0.o: assemble_reference build/objdiff/target/func_001390B0.s
 build build/objdiff/base/func_001390B0.o: cxx src/retail/func_001390B0.cpp
+
+build build/objdiff/target/func_00139268.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00139268
+  size = 0x20
+build build/objdiff/target/func_00139268.o: assemble_reference build/objdiff/target/func_00139268.s
+build build/objdiff/base/func_00139268.o: cxx src/retail/func_00139268.cpp
+
+build build/objdiff/target/func_00139288.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00139288
+  size = 0x20
+build build/objdiff/target/func_00139288.o: assemble_reference build/objdiff/target/func_00139288.s
+build build/objdiff/base/func_00139288.o: cxx src/retail/func_00139288.cpp
 
 build build/objdiff/target/func_0013BC48.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0013BC48
@@ -904,6 +1306,30 @@ build build/objdiff/target/func_0013BD98.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_0013BD98.o: assemble_reference build/objdiff/target/func_0013BD98.s
 build build/objdiff/base/func_0013BD98.o: cxx src/retail/func_0013BD98.cpp
 
+build build/objdiff/target/func_0013BE88.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0013BE88
+  size = 0x20
+build build/objdiff/target/func_0013BE88.o: assemble_reference build/objdiff/target/func_0013BE88.s
+build build/objdiff/base/func_0013BE88.o: cxx src/retail/func_0013BE88.cpp
+
+build build/objdiff/target/func_0013BEA8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0013BEA8
+  size = 0x20
+build build/objdiff/target/func_0013BEA8.o: assemble_reference build/objdiff/target/func_0013BEA8.s
+build build/objdiff/base/func_0013BEA8.o: cxx src/retail/func_0013BEA8.cpp
+
+build build/objdiff/target/func_0013C308.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0013C308
+  size = 0x20
+build build/objdiff/target/func_0013C308.o: assemble_reference build/objdiff/target/func_0013C308.s
+build build/objdiff/base/func_0013C308.o: cxx src/retail/func_0013C308.cpp
+
+build build/objdiff/target/func_0013C328.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0013C328
+  size = 0x20
+build build/objdiff/target/func_0013C328.o: assemble_reference build/objdiff/target/func_0013C328.s
+build build/objdiff/base/func_0013C328.o: cxx src/retail/func_0013C328.cpp
+
 build build/objdiff/target/func_0013EF48.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0013EF48
   size = 0x10
@@ -922,17 +1348,65 @@ build build/objdiff/target/func_001445A0.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_001445A0.o: assemble_reference build/objdiff/target/func_001445A0.s
 build build/objdiff/base/func_001445A0.o: cxx src/retail/func_001445A0.cpp
 
+build build/objdiff/target/func_00144CE8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00144CE8
+  size = 0x20
+build build/objdiff/target/func_00144CE8.o: assemble_reference build/objdiff/target/func_00144CE8.s
+build build/objdiff/base/func_00144CE8.o: cxx src/retail/func_00144CE8.cpp
+
+build build/objdiff/target/func_00144D08.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00144D08
+  size = 0x20
+build build/objdiff/target/func_00144D08.o: assemble_reference build/objdiff/target/func_00144D08.s
+build build/objdiff/base/func_00144D08.o: cxx src/retail/func_00144D08.cpp
+
+build build/objdiff/target/func_00145A48.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00145A48
+  size = 0x20
+build build/objdiff/target/func_00145A48.o: assemble_reference build/objdiff/target/func_00145A48.s
+build build/objdiff/base/func_00145A48.o: cxx src/retail/func_00145A48.cpp
+
+build build/objdiff/target/func_00145A68.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00145A68
+  size = 0x20
+build build/objdiff/target/func_00145A68.o: assemble_reference build/objdiff/target/func_00145A68.s
+build build/objdiff/base/func_00145A68.o: cxx src/retail/func_00145A68.cpp
+
 build build/objdiff/target/func_00147F50.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00147F50
   size = 0x18
 build build/objdiff/target/func_00147F50.o: assemble_reference build/objdiff/target/func_00147F50.s
 build build/objdiff/base/func_00147F50.o: cxx src/retail/func_00147F50.cpp
 
+build build/objdiff/target/func_00147F70.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00147F70
+  size = 0x20
+build build/objdiff/target/func_00147F70.o: assemble_reference build/objdiff/target/func_00147F70.s
+build build/objdiff/base/func_00147F70.o: cxx src/retail/func_00147F70.cpp
+
+build build/objdiff/target/func_00147F90.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00147F90
+  size = 0x20
+build build/objdiff/target/func_00147F90.o: assemble_reference build/objdiff/target/func_00147F90.s
+build build/objdiff/base/func_00147F90.o: cxx src/retail/func_00147F90.cpp
+
 build build/objdiff/target/func_00148848.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00148848
   size = 0x20
 build build/objdiff/target/func_00148848.o: assemble_reference build/objdiff/target/func_00148848.s
 build build/objdiff/base/func_00148848.o: cxx src/retail/func_00148848.cpp
+
+build build/objdiff/target/func_00148930.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00148930
+  size = 0x20
+build build/objdiff/target/func_00148930.o: assemble_reference build/objdiff/target/func_00148930.s
+build build/objdiff/base/func_00148930.o: cxx src/retail/func_00148930.cpp
+
+build build/objdiff/target/func_0014E238.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x0014E238
+  size = 0x20
+build build/objdiff/target/func_0014E238.o: assemble_reference build/objdiff/target/func_0014E238.s
+build build/objdiff/base/func_0014E238.o: cxx src/retail/func_0014E238.cpp
 
 build build/objdiff/target/func_001505A0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001505A0
@@ -970,11 +1444,23 @@ build build/objdiff/target/func_00153D78.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00153D78.o: assemble_reference build/objdiff/target/func_00153D78.s
 build build/objdiff/base/func_00153D78.o: cxx src/retail/func_00153D78.cpp
 
+build build/objdiff/target/func_00153DA0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00153DA0
+  size = 0x20
+build build/objdiff/target/func_00153DA0.o: assemble_reference build/objdiff/target/func_00153DA0.s
+build build/objdiff/base/func_00153DA0.o: cxx src/retail/func_00153DA0.cpp
+
 build build/objdiff/target/func_00155A58.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00155A58
   size = 0x10
 build build/objdiff/target/func_00155A58.o: assemble_reference build/objdiff/target/func_00155A58.s
 build build/objdiff/base/func_00155A58.o: cxx src/retail/func_00155A58.cpp
+
+build build/objdiff/target/func_00155A98.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00155A98
+  size = 0x20
+build build/objdiff/target/func_00155A98.o: assemble_reference build/objdiff/target/func_00155A98.s
+build build/objdiff/base/func_00155A98.o: cxx src/retail/func_00155A98.cpp
 
 build build/objdiff/target/func_00155AD0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00155AD0
@@ -1006,6 +1492,24 @@ build build/objdiff/target/func_00158EB0.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00158EB0.o: assemble_reference build/objdiff/target/func_00158EB0.s
 build build/objdiff/base/func_00158EB0.o: cxx src/retail/func_00158EB0.cpp
 
+build build/objdiff/target/func_00159060.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00159060
+  size = 0x20
+build build/objdiff/target/func_00159060.o: assemble_reference build/objdiff/target/func_00159060.s
+build build/objdiff/base/func_00159060.o: cxx src/retail/func_00159060.cpp
+
+build build/objdiff/target/func_001590C0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001590C0
+  size = 0x20
+build build/objdiff/target/func_001590C0.o: assemble_reference build/objdiff/target/func_001590C0.s
+build build/objdiff/base/func_001590C0.o: cxx src/retail/func_001590C0.cpp
+
+build build/objdiff/target/func_00159F30.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00159F30
+  size = 0x20
+build build/objdiff/target/func_00159F30.o: assemble_reference build/objdiff/target/func_00159F30.s
+build build/objdiff/base/func_00159F30.o: cxx src/retail/func_00159F30.cpp
+
 build build/objdiff/target/func_0015DFE8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x0015DFE8
   size = 0x10
@@ -1023,6 +1527,12 @@ build build/objdiff/target/func_00160038.s: extract_reference baserom/SHOX.ELF |
   size = 0x14
 build build/objdiff/target/func_00160038.o: assemble_reference build/objdiff/target/func_00160038.s
 build build/objdiff/base/func_00160038.o: cxx src/retail/func_00160038.cpp
+
+build build/objdiff/target/func_001600C0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001600C0
+  size = 0x20
+build build/objdiff/target/func_001600C0.o: assemble_reference build/objdiff/target/func_001600C0.s
+build build/objdiff/base/func_001600C0.o: cxx src/retail/func_001600C0.cpp
 
 build build/objdiff/target/func_001600E0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001600E0
@@ -1048,6 +1558,12 @@ build build/objdiff/target/func_00160E28.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_00160E28.o: assemble_reference build/objdiff/target/func_00160E28.s
 build build/objdiff/base/func_00160E28.o: cxx src/retail/func_00160E28.cpp
 
+build build/objdiff/target/func_00160F90.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00160F90
+  size = 0x20
+build build/objdiff/target/func_00160F90.o: assemble_reference build/objdiff/target/func_00160F90.s
+build build/objdiff/base/func_00160F90.o: cxx src/retail/func_00160F90.cpp
+
 build build/objdiff/target/func_001644D0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001644D0
   size = 0x10
@@ -1060,11 +1576,47 @@ build build/objdiff/target/func_001647B0.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_001647B0.o: assemble_reference build/objdiff/target/func_001647B0.s
 build build/objdiff/base/func_001647B0.o: cxx src/retail/func_001647B0.cpp
 
+build build/objdiff/target/func_00171E18.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00171E18
+  size = 0x20
+build build/objdiff/target/func_00171E18.o: assemble_reference build/objdiff/target/func_00171E18.s
+build build/objdiff/base/func_00171E18.o: cxx src/retail/func_00171E18.cpp
+
+build build/objdiff/target/func_00172C28.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00172C28
+  size = 0x20
+build build/objdiff/target/func_00172C28.o: assemble_reference build/objdiff/target/func_00172C28.s
+build build/objdiff/base/func_00172C28.o: cxx src/retail/func_00172C28.cpp
+
+build build/objdiff/target/func_00172C48.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00172C48
+  size = 0x20
+build build/objdiff/target/func_00172C48.o: assemble_reference build/objdiff/target/func_00172C48.s
+build build/objdiff/base/func_00172C48.o: cxx src/retail/func_00172C48.cpp
+
 build build/objdiff/target/func_00172F80.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00172F80
   size = 0x18
 build build/objdiff/target/func_00172F80.o: assemble_reference build/objdiff/target/func_00172F80.s
 build build/objdiff/base/func_00172F80.o: cxx src/retail/func_00172F80.cpp
+
+build build/objdiff/target/func_00173108.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00173108
+  size = 0x20
+build build/objdiff/target/func_00173108.o: assemble_reference build/objdiff/target/func_00173108.s
+build build/objdiff/base/func_00173108.o: cxx src/retail/func_00173108.cpp
+
+build build/objdiff/target/func_00174A70.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00174A70
+  size = 0x20
+build build/objdiff/target/func_00174A70.o: assemble_reference build/objdiff/target/func_00174A70.s
+build build/objdiff/base/func_00174A70.o: cxx src/retail/func_00174A70.cpp
+
+build build/objdiff/target/func_001752C0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001752C0
+  size = 0x20
+build build/objdiff/target/func_001752C0.o: assemble_reference build/objdiff/target/func_001752C0.s
+build build/objdiff/base/func_001752C0.o: cxx src/retail/func_001752C0.cpp
 
 build build/objdiff/target/func_00175438.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00175438
@@ -1078,6 +1630,18 @@ build build/objdiff/target/func_001766B8.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_001766B8.o: assemble_reference build/objdiff/target/func_001766B8.s
 build build/objdiff/base/func_001766B8.o: cxx src/retail/func_001766B8.cpp
 
+build build/objdiff/target/func_001768B0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001768B0
+  size = 0x20
+build build/objdiff/target/func_001768B0.o: assemble_reference build/objdiff/target/func_001768B0.s
+build build/objdiff/base/func_001768B0.o: cxx src/retail/func_001768B0.cpp
+
+build build/objdiff/target/func_001768D0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001768D0
+  size = 0x20
+build build/objdiff/target/func_001768D0.o: assemble_reference build/objdiff/target/func_001768D0.s
+build build/objdiff/base/func_001768D0.o: cxx src/retail/func_001768D0.cpp
+
 build build/objdiff/target/func_001771B0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001771B0
   size = 0x10
@@ -1089,6 +1653,12 @@ build build/objdiff/target/func_001789C8.s: extract_reference baserom/SHOX.ELF |
   size = 0x10
 build build/objdiff/target/func_001789C8.o: assemble_reference build/objdiff/target/func_001789C8.s
 build build/objdiff/base/func_001789C8.o: cxx src/retail/func_001789C8.cpp
+
+build build/objdiff/target/func_00178CA0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x00178CA0
+  size = 0x20
+build build/objdiff/target/func_00178CA0.o: assemble_reference build/objdiff/target/func_00178CA0.s
+build build/objdiff/base/func_00178CA0.o: cxx src/retail/func_00178CA0.cpp
 
 build build/objdiff/target/func_00179A30.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x00179A30
@@ -1222,11 +1792,47 @@ build build/objdiff/target/func_001C15D8.s: extract_reference baserom/SHOX.ELF |
 build build/objdiff/target/func_001C15D8.o: assemble_reference build/objdiff/target/func_001C15D8.s
 build build/objdiff/base/func_001C15D8.o: cxx src/retail/func_001C15D8.cpp
 
+build build/objdiff/target/func_001CCA98.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001CCA98
+  size = 0x18
+build build/objdiff/target/func_001CCA98.o: assemble_reference build/objdiff/target/func_001CCA98.s
+build build/objdiff/base/func_001CCA98.o: cxx src/retail/func_001CCA98.cpp
+
 build build/objdiff/target/func_001CCAC0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x001CCAC0
   size = 0x10
 build build/objdiff/target/func_001CCAC0.o: assemble_reference build/objdiff/target/func_001CCAC0.s
 build build/objdiff/base/func_001CCAC0.o: cxx src/retail/func_001CCAC0.cpp
+
+build build/objdiff/target/func_001CCD60.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001CCD60
+  size = 0x18
+build build/objdiff/target/func_001CCD60.o: assemble_reference build/objdiff/target/func_001CCD60.s
+build build/objdiff/base/func_001CCD60.o: cxx src/retail/func_001CCD60.cpp
+
+build build/objdiff/target/func_001D4CD8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001D4CD8
+  size = 0x18
+build build/objdiff/target/func_001D4CD8.o: assemble_reference build/objdiff/target/func_001D4CD8.s
+build build/objdiff/base/func_001D4CD8.o: cxx src/retail/func_001D4CD8.cpp
+
+build build/objdiff/target/func_001E57E8.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001E57E8
+  size = 0x18
+build build/objdiff/target/func_001E57E8.o: assemble_reference build/objdiff/target/func_001E57E8.s
+build build/objdiff/base/func_001E57E8.o: cxx src/retail/func_001E57E8.cpp
+
+build build/objdiff/target/func_001E5800.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001E5800
+  size = 0x18
+build build/objdiff/target/func_001E5800.o: assemble_reference build/objdiff/target/func_001E5800.s
+build build/objdiff/base/func_001E5800.o: cxx src/retail/func_001E5800.cpp
+
+build build/objdiff/target/func_001FA558.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
+  address = 0x001FA558
+  size = 0x18
+build build/objdiff/target/func_001FA558.o: assemble_reference build/objdiff/target/func_001FA558.s
+build build/objdiff/base/func_001FA558.o: cxx src/retail/func_001FA558.cpp
 
 build build/objdiff/target/func_002103A0.s: extract_reference baserom/SHOX.ELF | tools/objdiff/extract_reference.py
   address = 0x002103A0
@@ -1242,4 +1848,4 @@ build build/objdiff/target/retail_inventory.s: generate_inventory asm/retail/tex
 
 build build/objdiff/target/retail_inventory.o: assemble_reference build/objdiff/target/retail_inventory.s
 
-default build/objdiff/base/func_00100100.o build/objdiff/base/func_00100148.o build/objdiff/base/func_00100368.o build/objdiff/base/func_001003E8.o build/objdiff/base/func_00100448.o build/objdiff/base/func_00100550.o build/objdiff/base/func_00100DE0.o build/objdiff/base/func_00100E30.o build/objdiff/base/func_00100E50.o build/objdiff/base/func_00100EA8.o build/objdiff/base/func_001025E0.o build/objdiff/base/func_00102628.o build/objdiff/base/func_001026F8.o build/objdiff/base/func_00102718.o build/objdiff/base/func_001028F0.o build/objdiff/base/func_00102908.o build/objdiff/base/func_00102B18.o build/objdiff/base/func_00102B58.o build/objdiff/base/func_00102B70.o build/objdiff/base/func_00103168.o build/objdiff/base/func_00103198.o build/objdiff/base/func_001037C0.o build/objdiff/base/func_001037E0.o build/objdiff/base/func_00103D28.o build/objdiff/base/func_00103DA0.o build/objdiff/base/func_00104080.o build/objdiff/base/func_00105600.o build/objdiff/base/func_00105640.o build/objdiff/base/func_00105680.o build/objdiff/base/func_00107698.o build/objdiff/base/func_001079D8.o build/objdiff/base/func_00107A28.o build/objdiff/base/func_00107BD0.o build/objdiff/base/func_00107C08.o build/objdiff/base/func_00107E08.o build/objdiff/base/func_00108148.o build/objdiff/base/func_00108208.o build/objdiff/base/func_00108F50.o build/objdiff/base/func_0010A4A8.o build/objdiff/base/func_0010A6A0.o build/objdiff/base/func_0010A9B8.o build/objdiff/base/func_0010A9C0.o build/objdiff/base/func_0010A9C8.o build/objdiff/base/func_0010AA78.o build/objdiff/base/func_0010AA80.o build/objdiff/base/func_0010AA88.o build/objdiff/base/func_0010AA90.o build/objdiff/base/func_0010AA98.o build/objdiff/base/func_0010AAA0.o build/objdiff/base/func_0010B618.o build/objdiff/base/func_0010B6D0.o build/objdiff/base/func_0010B6D8.o build/objdiff/base/func_0010B6E0.o build/objdiff/base/func_0010B700.o build/objdiff/base/func_0010B708.o build/objdiff/base/func_0010BFB0.o build/objdiff/base/func_0010C068.o build/objdiff/base/func_0010C130.o build/objdiff/base/func_0010C430.o build/objdiff/base/func_0010CC58.o build/objdiff/base/func_0010D8E8.o build/objdiff/base/func_0010D8F0.o build/objdiff/base/func_0010D8F8.o build/objdiff/base/func_0010DF50.o build/objdiff/base/func_0010E040.o build/objdiff/base/func_0010E6A8.o build/objdiff/base/func_0010F4C0.o build/objdiff/base/func_0010F7D8.o build/objdiff/base/func_0010F8B0.o build/objdiff/base/func_0010F960.o build/objdiff/base/func_001112F0.o build/objdiff/base/func_001113B8.o build/objdiff/base/func_001114A8.o build/objdiff/base/func_001115A0.o build/objdiff/base/func_001124F8.o build/objdiff/base/func_00112500.o build/objdiff/base/func_00112568.o build/objdiff/base/func_001125B8.o build/objdiff/base/func_001125C8.o build/objdiff/base/func_001125D0.o build/objdiff/base/func_001125D8.o build/objdiff/base/func_001125E0.o build/objdiff/base/func_00112B10.o build/objdiff/base/func_00112B18.o build/objdiff/base/func_00112B20.o build/objdiff/base/func_00112B40.o build/objdiff/base/func_00112E60.o build/objdiff/base/func_00113268.o build/objdiff/base/func_00113270.o build/objdiff/base/func_00113278.o build/objdiff/base/func_00113280.o build/objdiff/base/func_00113340.o build/objdiff/base/func_00113370.o build/objdiff/base/func_00113378.o build/objdiff/base/func_001134A0.o build/objdiff/base/func_001137B8.o build/objdiff/base/func_00116D50.o build/objdiff/base/func_00116ED0.o build/objdiff/base/func_00117420.o build/objdiff/base/func_001181A8.o build/objdiff/base/func_001187F8.o build/objdiff/base/func_00118AD8.o build/objdiff/base/func_00119468.o build/objdiff/base/func_00119630.o build/objdiff/base/func_00119818.o build/objdiff/base/func_0011F180.o build/objdiff/base/func_00120118.o build/objdiff/base/func_00120328.o build/objdiff/base/func_001203B0.o build/objdiff/base/func_001203D0.o build/objdiff/base/func_001208C0.o build/objdiff/base/func_001208D8.o build/objdiff/base/func_001208F0.o build/objdiff/base/func_00120910.o build/objdiff/base/func_001233B0.o build/objdiff/base/func_001233C8.o build/objdiff/base/func_00125C28.o build/objdiff/base/func_00125CF8.o build/objdiff/base/func_00125D70.o build/objdiff/base/func_00125DF0.o build/objdiff/base/func_00125ED0.o build/objdiff/base/func_00125EE0.o build/objdiff/base/func_00128A38.o build/objdiff/base/func_00128AF8.o build/objdiff/base/func_00128B10.o build/objdiff/base/func_00128B20.o build/objdiff/base/func_00128B30.o build/objdiff/base/func_00128C98.o build/objdiff/base/func_00128CA0.o build/objdiff/base/func_00128DE0.o build/objdiff/base/func_00128EA0.o build/objdiff/base/func_00128F80.o build/objdiff/base/func_00128FE8.o build/objdiff/base/func_00129148.o build/objdiff/base/func_00129160.o build/objdiff/base/func_001291A0.o build/objdiff/base/func_001291C8.o build/objdiff/base/func_0012ABD0.o build/objdiff/base/func_0012AC80.o build/objdiff/base/func_0012ACA0.o build/objdiff/base/func_0012E208.o build/objdiff/base/func_0012F350.o build/objdiff/base/func_0012F3F0.o build/objdiff/base/func_0012F410.o build/objdiff/base/func_001390B0.o build/objdiff/base/func_0013BC48.o build/objdiff/base/func_0013BD38.o build/objdiff/base/func_0013BD98.o build/objdiff/base/func_0013EF48.o build/objdiff/base/func_0013EF58.o build/objdiff/base/func_001445A0.o build/objdiff/base/func_00147F50.o build/objdiff/base/func_00148848.o build/objdiff/base/func_001505A0.o build/objdiff/base/func_00153BC0.o build/objdiff/base/func_00153BD8.o build/objdiff/base/func_00153D38.o build/objdiff/base/func_00153D60.o build/objdiff/base/func_00153D78.o build/objdiff/base/func_00155A58.o build/objdiff/base/func_00155AD0.o build/objdiff/base/func_00157B08.o build/objdiff/base/func_00158E20.o build/objdiff/base/func_00158E38.o build/objdiff/base/func_00158EB0.o build/objdiff/base/func_0015DFE8.o build/objdiff/base/func_0015FD58.o build/objdiff/base/func_00160038.o build/objdiff/base/func_001600E0.o build/objdiff/base/func_00160100.o build/objdiff/base/func_00160118.o build/objdiff/base/func_00160E28.o build/objdiff/base/func_001644D0.o build/objdiff/base/func_001647B0.o build/objdiff/base/func_00172F80.o build/objdiff/base/func_00175438.o build/objdiff/base/func_001766B8.o build/objdiff/base/func_001771B0.o build/objdiff/base/func_001789C8.o build/objdiff/base/func_00179A30.o build/objdiff/base/func_001800D0.o build/objdiff/base/func_001802F8.o build/objdiff/base/func_001808A0.o build/objdiff/base/func_0018A048.o build/objdiff/base/func_0018E4C8.o build/objdiff/base/func_0018EB98.o build/objdiff/base/func_0018EDF8.o build/objdiff/base/func_00192240.o build/objdiff/base/func_00196438.o build/objdiff/base/func_00196470.o build/objdiff/base/func_001964B8.o build/objdiff/base/func_00196718.o build/objdiff/base/func_00197600.o build/objdiff/base/func_00197618.o build/objdiff/base/func_0019FEA8.o build/objdiff/base/func_001A58D0.o build/objdiff/base/func_001AA5A8.o build/objdiff/base/func_001AA610.o build/objdiff/base/func_001ABA58.o build/objdiff/base/func_001BA498.o build/objdiff/base/func_001C15D8.o build/objdiff/base/func_001CCAC0.o build/objdiff/base/func_002103A0.o
+default build/objdiff/base/func_00100100.o build/objdiff/base/func_00100148.o build/objdiff/base/func_00100368.o build/objdiff/base/func_001003E8.o build/objdiff/base/func_00100448.o build/objdiff/base/func_00100550.o build/objdiff/base/func_00100DE0.o build/objdiff/base/func_00100E30.o build/objdiff/base/func_00100E50.o build/objdiff/base/func_00100EA8.o build/objdiff/base/func_00100F20.o build/objdiff/base/func_00100F68.o build/objdiff/base/func_001025E0.o build/objdiff/base/func_00102628.o build/objdiff/base/func_001026F8.o build/objdiff/base/func_00102718.o build/objdiff/base/func_001028F0.o build/objdiff/base/func_00102908.o build/objdiff/base/func_00102B18.o build/objdiff/base/func_00102B58.o build/objdiff/base/func_00102B70.o build/objdiff/base/func_00103120.o build/objdiff/base/func_00103168.o build/objdiff/base/func_00103198.o build/objdiff/base/func_001031F8.o build/objdiff/base/func_001037C0.o build/objdiff/base/func_001037E0.o build/objdiff/base/func_00103C08.o build/objdiff/base/func_00103D28.o build/objdiff/base/func_00103DA0.o build/objdiff/base/func_00104080.o build/objdiff/base/func_00105320.o build/objdiff/base/func_00105370.o build/objdiff/base/func_001053C0.o build/objdiff/base/func_001054A8.o build/objdiff/base/func_00105600.o build/objdiff/base/func_00105640.o build/objdiff/base/func_00105680.o build/objdiff/base/func_00105800.o build/objdiff/base/func_00107698.o build/objdiff/base/func_001078F0.o build/objdiff/base/func_001079D8.o build/objdiff/base/func_00107A28.o build/objdiff/base/func_00107BD0.o build/objdiff/base/func_00107C08.o build/objdiff/base/func_00107E08.o build/objdiff/base/func_00108148.o build/objdiff/base/func_00108208.o build/objdiff/base/func_001083B0.o build/objdiff/base/func_00108F50.o build/objdiff/base/func_00109080.o build/objdiff/base/func_00109238.o build/objdiff/base/func_001096B0.o build/objdiff/base/func_0010A3E0.o build/objdiff/base/func_0010A4A8.o build/objdiff/base/func_0010A668.o build/objdiff/base/func_0010A6A0.o build/objdiff/base/func_0010A9B8.o build/objdiff/base/func_0010A9C0.o build/objdiff/base/func_0010A9C8.o build/objdiff/base/func_0010AA78.o build/objdiff/base/func_0010AA80.o build/objdiff/base/func_0010AA88.o build/objdiff/base/func_0010AA90.o build/objdiff/base/func_0010AA98.o build/objdiff/base/func_0010AAA0.o build/objdiff/base/func_0010B618.o build/objdiff/base/func_0010B6D0.o build/objdiff/base/func_0010B6D8.o build/objdiff/base/func_0010B6E0.o build/objdiff/base/func_0010B700.o build/objdiff/base/func_0010B708.o build/objdiff/base/func_0010BFB0.o build/objdiff/base/func_0010C068.o build/objdiff/base/func_0010C130.o build/objdiff/base/func_0010C430.o build/objdiff/base/func_0010C9B0.o build/objdiff/base/func_0010CC58.o build/objdiff/base/func_0010D8C8.o build/objdiff/base/func_0010D8E8.o build/objdiff/base/func_0010D8F0.o build/objdiff/base/func_0010D8F8.o build/objdiff/base/func_0010DB50.o build/objdiff/base/func_0010DB70.o build/objdiff/base/func_0010DF50.o build/objdiff/base/func_0010E040.o build/objdiff/base/func_0010E6A8.o build/objdiff/base/func_0010F480.o build/objdiff/base/func_0010F4C0.o build/objdiff/base/func_0010F7D8.o build/objdiff/base/func_0010F8B0.o build/objdiff/base/func_0010F940.o build/objdiff/base/func_0010F960.o build/objdiff/base/func_001110D0.o build/objdiff/base/func_001112A8.o build/objdiff/base/func_001112F0.o build/objdiff/base/func_001113B8.o build/objdiff/base/func_001113C8.o build/objdiff/base/func_001114A8.o build/objdiff/base/func_001115A0.o build/objdiff/base/func_001117C8.o build/objdiff/base/func_001118F0.o build/objdiff/base/func_00111910.o build/objdiff/base/func_001124F8.o build/objdiff/base/func_00112500.o build/objdiff/base/func_00112568.o build/objdiff/base/func_00112578.o build/objdiff/base/func_001125B8.o build/objdiff/base/func_001125C8.o build/objdiff/base/func_001125D0.o build/objdiff/base/func_001125D8.o build/objdiff/base/func_001125E0.o build/objdiff/base/func_001125E8.o build/objdiff/base/func_00112B10.o build/objdiff/base/func_00112B18.o build/objdiff/base/func_00112B20.o build/objdiff/base/func_00112B40.o build/objdiff/base/func_00112E60.o build/objdiff/base/func_00113268.o build/objdiff/base/func_00113270.o build/objdiff/base/func_00113278.o build/objdiff/base/func_00113280.o build/objdiff/base/func_00113340.o build/objdiff/base/func_00113370.o build/objdiff/base/func_00113378.o build/objdiff/base/func_001134A0.o build/objdiff/base/func_00113788.o build/objdiff/base/func_001137B8.o build/objdiff/base/func_001165E0.o build/objdiff/base/func_00116D50.o build/objdiff/base/func_00116ED0.o build/objdiff/base/func_00117190.o build/objdiff/base/func_00117420.o build/objdiff/base/func_00117B70.o build/objdiff/base/func_001181A8.o build/objdiff/base/func_001187F8.o build/objdiff/base/func_00118800.o build/objdiff/base/func_00118A50.o build/objdiff/base/func_00118AD8.o build/objdiff/base/func_00118AE0.o build/objdiff/base/func_00118C98.o build/objdiff/base/func_00118CB8.o build/objdiff/base/func_00119468.o build/objdiff/base/func_00119630.o build/objdiff/base/func_00119818.o build/objdiff/base/func_00119B18.o build/objdiff/base/func_00119C28.o build/objdiff/base/func_0011E768.o build/objdiff/base/func_0011E788.o build/objdiff/base/func_0011E898.o build/objdiff/base/func_0011EF68.o build/objdiff/base/func_0011F158.o build/objdiff/base/func_0011F180.o build/objdiff/base/func_00120118.o build/objdiff/base/func_00120328.o build/objdiff/base/func_001203B0.o build/objdiff/base/func_001203D0.o build/objdiff/base/func_001208C0.o build/objdiff/base/func_001208D8.o build/objdiff/base/func_001208F0.o build/objdiff/base/func_00120910.o build/objdiff/base/func_00123330.o build/objdiff/base/func_00123350.o build/objdiff/base/func_00123370.o build/objdiff/base/func_00123390.o build/objdiff/base/func_001233B0.o build/objdiff/base/func_001233C8.o build/objdiff/base/func_00123418.o build/objdiff/base/func_001236E8.o build/objdiff/base/func_00125C28.o build/objdiff/base/func_00125CF8.o build/objdiff/base/func_00125D70.o build/objdiff/base/func_00125D80.o build/objdiff/base/func_00125DD0.o build/objdiff/base/func_00125DF0.o build/objdiff/base/func_00125ED0.o build/objdiff/base/func_00125EE0.o build/objdiff/base/func_00125EF0.o build/objdiff/base/func_00128A38.o build/objdiff/base/func_00128AC8.o build/objdiff/base/func_00128AF8.o build/objdiff/base/func_00128B10.o build/objdiff/base/func_00128B20.o build/objdiff/base/func_00128B30.o build/objdiff/base/func_00128C98.o build/objdiff/base/func_00128CA0.o build/objdiff/base/func_00128DE0.o build/objdiff/base/func_00128E60.o build/objdiff/base/func_00128E80.o build/objdiff/base/func_00128EA0.o build/objdiff/base/func_00128F80.o build/objdiff/base/func_00128FE8.o build/objdiff/base/func_00129148.o build/objdiff/base/func_00129160.o build/objdiff/base/func_001291A0.o build/objdiff/base/func_001291C8.o build/objdiff/base/func_0012A9D0.o build/objdiff/base/func_0012ABD0.o build/objdiff/base/func_0012AC80.o build/objdiff/base/func_0012ACA0.o build/objdiff/base/func_0012E208.o build/objdiff/base/func_0012E288.o build/objdiff/base/func_0012E2A8.o build/objdiff/base/func_0012E2C8.o build/objdiff/base/func_0012F350.o build/objdiff/base/func_0012F3F0.o build/objdiff/base/func_0012F410.o build/objdiff/base/func_00130918.o build/objdiff/base/func_00138DA0.o build/objdiff/base/func_001390B0.o build/objdiff/base/func_00139268.o build/objdiff/base/func_00139288.o build/objdiff/base/func_0013BC48.o build/objdiff/base/func_0013BD38.o build/objdiff/base/func_0013BD98.o build/objdiff/base/func_0013BE88.o build/objdiff/base/func_0013BEA8.o build/objdiff/base/func_0013C308.o build/objdiff/base/func_0013C328.o build/objdiff/base/func_0013EF48.o build/objdiff/base/func_0013EF58.o build/objdiff/base/func_001445A0.o build/objdiff/base/func_00144CE8.o build/objdiff/base/func_00144D08.o build/objdiff/base/func_00145A48.o build/objdiff/base/func_00145A68.o build/objdiff/base/func_00147F50.o build/objdiff/base/func_00147F70.o build/objdiff/base/func_00147F90.o build/objdiff/base/func_00148848.o build/objdiff/base/func_00148930.o build/objdiff/base/func_0014E238.o build/objdiff/base/func_001505A0.o build/objdiff/base/func_00153BC0.o build/objdiff/base/func_00153BD8.o build/objdiff/base/func_00153D38.o build/objdiff/base/func_00153D60.o build/objdiff/base/func_00153D78.o build/objdiff/base/func_00153DA0.o build/objdiff/base/func_00155A58.o build/objdiff/base/func_00155A98.o build/objdiff/base/func_00155AD0.o build/objdiff/base/func_00157B08.o build/objdiff/base/func_00158E20.o build/objdiff/base/func_00158E38.o build/objdiff/base/func_00158EB0.o build/objdiff/base/func_00159060.o build/objdiff/base/func_001590C0.o build/objdiff/base/func_00159F30.o build/objdiff/base/func_0015DFE8.o build/objdiff/base/func_0015FD58.o build/objdiff/base/func_00160038.o build/objdiff/base/func_001600C0.o build/objdiff/base/func_001600E0.o build/objdiff/base/func_00160100.o build/objdiff/base/func_00160118.o build/objdiff/base/func_00160E28.o build/objdiff/base/func_00160F90.o build/objdiff/base/func_001644D0.o build/objdiff/base/func_001647B0.o build/objdiff/base/func_00171E18.o build/objdiff/base/func_00172C28.o build/objdiff/base/func_00172C48.o build/objdiff/base/func_00172F80.o build/objdiff/base/func_00173108.o build/objdiff/base/func_00174A70.o build/objdiff/base/func_001752C0.o build/objdiff/base/func_00175438.o build/objdiff/base/func_001766B8.o build/objdiff/base/func_001768B0.o build/objdiff/base/func_001768D0.o build/objdiff/base/func_001771B0.o build/objdiff/base/func_001789C8.o build/objdiff/base/func_00178CA0.o build/objdiff/base/func_00179A30.o build/objdiff/base/func_001800D0.o build/objdiff/base/func_001802F8.o build/objdiff/base/func_001808A0.o build/objdiff/base/func_0018A048.o build/objdiff/base/func_0018E4C8.o build/objdiff/base/func_0018EB98.o build/objdiff/base/func_0018EDF8.o build/objdiff/base/func_00192240.o build/objdiff/base/func_00196438.o build/objdiff/base/func_00196470.o build/objdiff/base/func_001964B8.o build/objdiff/base/func_00196718.o build/objdiff/base/func_00197600.o build/objdiff/base/func_00197618.o build/objdiff/base/func_0019FEA8.o build/objdiff/base/func_001A58D0.o build/objdiff/base/func_001AA5A8.o build/objdiff/base/func_001AA610.o build/objdiff/base/func_001ABA58.o build/objdiff/base/func_001BA498.o build/objdiff/base/func_001C15D8.o build/objdiff/base/func_001CCA98.o build/objdiff/base/func_001CCAC0.o build/objdiff/base/func_001CCD60.o build/objdiff/base/func_001D4CD8.o build/objdiff/base/func_001E57E8.o build/objdiff/base/func_001E5800.o build/objdiff/base/func_001FA558.o build/objdiff/base/func_002103A0.o
