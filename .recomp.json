@@ -4,5 +4,9 @@
   "wikidata": "Q7503327",
   "system": "PS2",
   "type": "decomp",
-  "status": "in-progress"
+  "status": "in-progress",
+  "toolchain": "Splat",
+  "original": {
+    "region": "PAL"
+  }
 }
