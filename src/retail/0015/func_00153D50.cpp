@@ -1,0 +1,3 @@
+extern "C" void func_00153D50(void *object) {
+    *(int *)((char *)object + 8) = 1;
+}
