@@ -104,6 +104,12 @@
       "source": "src/retail/0010/func_00102628.cpp"
     },
     {
+      "name": "func_00102688",
+      "address": "0x00102688",
+      "size": "0x70",
+      "source": "src/retail/0010/func_00102688.cpp"
+    },
+    {
       "name": "func_001026F8",
       "address": "0x001026F8",
       "size": "0x1C",
@@ -198,6 +204,12 @@
       "address": "0x00103DA0",
       "size": "0x24",
       "source": "src/retail/0010/func_00103DA0.cpp"
+    },
+    {
+      "name": "func_00103FE8",
+      "address": "0x00103FE8",
+      "size": "0x98",
+      "source": "src/retail/0010/func_00103FE8.cpp"
     },
     {
       "name": "func_00104080",
@@ -806,6 +818,12 @@
       "source": "src/retail/0010/func_0010F558.cpp"
     },
     {
+      "name": "func_0010F668",
+      "address": "0x0010F668",
+      "size": "0x38",
+      "source": "src/retail/0010/func_0010F668.cpp"
+    },
+    {
       "name": "func_0010F7D8",
       "address": "0x0010F7D8",
       "size": "0x58",
@@ -944,6 +962,18 @@
       "source": "src/retail/0011/func_00111930.cpp"
     },
     {
+      "name": "func_00112320",
+      "address": "0x00112320",
+      "size": "0x44",
+      "source": "src/retail/0011/func_00112320.cpp"
+    },
+    {
+      "name": "func_00112420",
+      "address": "0x00112420",
+      "size": "0xA0",
+      "source": "src/retail/0011/func_00112420.cpp"
+    },
+    {
       "name": "func_001124F8",
       "address": "0x001124F8",
       "size": "0x8",
@@ -1002,6 +1032,18 @@
       "address": "0x001125E8",
       "size": "0x4C",
       "source": "src/retail/0011/func_001125E8.cpp"
+    },
+    {
+      "name": "func_001129A0",
+      "address": "0x001129A0",
+      "size": "0x3C",
+      "source": "src/retail/0011/func_001129A0.cpp"
+    },
+    {
+      "name": "func_00112A30",
+      "address": "0x00112A30",
+      "size": "0x4C",
+      "source": "src/retail/0011/func_00112A30.cpp"
     },
     {
       "name": "func_00112B10",
@@ -2544,6 +2586,12 @@
       "address": "0x001C15D8",
       "size": "0x18",
       "source": "src/retail/001C/func_001C15D8.cpp"
+    },
+    {
+      "name": "func_001C5900",
+      "address": "0x001C5900",
+      "size": "0x18",
+      "source": "src/retail/001C/func_001C5900.cpp"
     },
     {
       "name": "func_001CCA98",
