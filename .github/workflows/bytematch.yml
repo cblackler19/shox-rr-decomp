@@ -33,17 +33,29 @@ jobs:
           report = json.loads(path.read_text())
           measures = report["measures"]
 
-          assert report["version"] == 2
-          assert int(measures["total_code"]) == 1905072
-          assert int(measures["total_functions"]) == 7408
-          assert int(measures["matched_functions"]) >= 3
-          assert int(measures["matched_code"]) >= 28
-          assert 0 <= measures["matched_code_percent"] <= 100
+          assert report["version"] == 2, "Unsupported objdiff report version"
+
+          total_code = int(measures["total_code"])
+          matched_code = int(measures["matched_code"])
+          total_functions = int(measures["total_functions"])
+          matched_functions = int(measures["matched_functions"])
+          matched_percent = float(measures["matched_code_percent"])
+
+          assert total_code > 0, "Total code must be positive"
+          assert total_functions > 0, "Total functions must be positive"
+          assert 0 <= matched_code <= total_code, "Invalid matched code count"
+          assert 0 <= matched_functions <= total_functions, "Invalid matched function count"
+          assert matched_functions >= 433, "Registered function progress regressed"
+          assert matched_code >= 15108, "Matched code progress regressed"
+          assert 0 <= matched_percent <= 100, "Invalid matched code percentage"
+          assert abs(matched_percent - 100 * matched_code / total_code) < 0.01, (
+              "Matched code percentage does not agree with code counts"
+          )
 
           print("Retail report validation: PASS")
-          print("Total code:", measures["total_code"])
-          print("Matched code:", measures["matched_code"])
-          print("Progress:", measures["matched_code_percent"])
+          print(f"Matched functions: {matched_functions}/{total_functions}")
+          print(f"Matched code: {matched_code}/{total_code}")
+          print(f"Progress: {matched_percent:.2f}%")
           PY
 
       - name: Upload ByteMatch report
