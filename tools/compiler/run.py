@@ -14,7 +14,7 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
-TOOLCHAIN = ROOT / "toolchain" / "eegcc_sn_v2.73a" / "bin"
+TOOLCHAIN_RELATIVE = Path("eegcc_sn_v2.73a") / "bin"
 IMAGE = os.environ.get("SHOX_SN_GCC_IMAGE", "shox-sn-gcc")
 BACKEND = os.environ.get("SHOX_TOOLCHAIN_BACKEND", "docker-wine")
 CONTAINER_ROOT = Path("/workspace")
@@ -53,16 +53,41 @@ def map_path(value: str, host_cwd: Path) -> str:
     return prefix + (CONTAINER_ROOT / relative).as_posix()
 
 
+def toolchain_location() -> tuple[Path, bool]:
+    """Return the host toolchain root and whether it needs a Docker mount."""
+    supplied = os.environ.get("SHOX_TOOLCHAIN_DIR")
+    if supplied is None:
+        return ROOT / "toolchain", False
+
+    try:
+        root = Path(supplied).expanduser().resolve(strict=True)
+    except (OSError, RuntimeError) as exc:
+        raise FileNotFoundError(
+            f"SHOX_TOOLCHAIN_DIR cannot be accessed: {supplied!r}: {exc}"
+        ) from exc
+    if not root.is_dir() or not os.access(root, os.R_OK | os.X_OK):
+        raise FileNotFoundError(
+            f"SHOX_TOOLCHAIN_DIR is not an accessible directory: {root}"
+        )
+    return root, True
+
+
 def container_command(tool: str, args: list[str], host_cwd: Path) -> list[str]:
     docker = shutil.which("docker")
     if not docker:
         raise RuntimeError("Docker is required for the docker-wine toolchain backend")
 
-    executable = (TOOLCHAIN / tool).resolve()
-    if executable.parent != TOOLCHAIN.resolve() or executable.suffix.lower() != ".exe":
+    toolchain_root, mount_toolchain = toolchain_location()
+    toolchain_bin = toolchain_root / TOOLCHAIN_RELATIVE
+    executable = (toolchain_bin / tool).resolve()
+    if executable.parent != toolchain_bin.resolve() or executable.suffix.lower() != ".exe":
         raise ValueError(f"Unknown SN Systems executable: {tool}")
-    if not executable.is_file():
-        raise FileNotFoundError(f"SN Systems executable not found: {executable}")
+    if not toolchain_bin.is_dir() or not os.access(toolchain_bin, os.R_OK | os.X_OK):
+        raise FileNotFoundError(
+            f"SN Systems toolchain bin directory is not accessible: {toolchain_bin}"
+        )
+    if not executable.is_file() or not os.access(executable, os.R_OK):
+        raise FileNotFoundError(f"SN Systems executable not found or unreadable: {executable}")
 
     try:
         relative_cwd = host_cwd.resolve().relative_to(ROOT)
@@ -74,17 +99,22 @@ def container_command(tool: str, args: list[str], host_cwd: Path) -> list[str]:
     uid, gid = os.getuid(), os.getgid()
     mapped_args = [map_path(arg, host_cwd) for arg in args]
 
-    return [
+    command = [
         docker, "run", "--rm", "--user", f"{uid}:{gid}",
         "-e", "WINEARCH=win32", "-e", "WINEPREFIX=/wineprefix",
         "-e", "HOME=/tmp", "-e", "XDG_CACHE_HOME=/tmp", "-e", "XDG_CONFIG_HOME=/tmp",
         "-v", f"{volume}:/wineprefix",
         "-v", f"{ROOT}:/workspace:z",
+    ]
+    if mount_toolchain:
+        command.extend(["-v", f"{toolchain_root}:/workspace/toolchain:ro,z"])
+    command.extend([
         "-w", (CONTAINER_ROOT / relative_cwd).as_posix(),
         IMAGE,
         f"/workspace/toolchain/eegcc_sn_v2.73a/bin/{tool}",
         *mapped_args,
-    ]
+    ])
+    return command
 
 
 def run_with_prefix(command: list[str]) -> int:
