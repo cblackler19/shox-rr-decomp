@@ -56,20 +56,30 @@ def map_path(value: str, host_cwd: Path) -> str:
 def toolchain_location() -> tuple[Path, bool]:
     """Return the host toolchain root and whether it needs a Docker mount."""
     supplied = os.environ.get("SHOX_TOOLCHAIN_DIR")
-    if supplied is None:
-        return ROOT / "toolchain", False
+    candidate = Path(supplied).expanduser() if supplied is not None else ROOT / "toolchain"
+    try:
+        root = candidate.resolve(strict=True)
+    except (OSError, RuntimeError) as exc:
+        if supplied is not None:
+            message = f"SHOX_TOOLCHAIN_DIR cannot be accessed: {supplied!r}: {exc}"
+        else:
+            message = (
+                f"SN Systems toolchain directory is missing or cannot be resolved: "
+                f"{candidate}: {exc}; create toolchain/ or set SHOX_TOOLCHAIN_DIR"
+            )
+        raise FileNotFoundError(message) from exc
+    if not root.is_dir() or not os.access(root, os.R_OK | os.X_OK):
+        setting = "SHOX_TOOLCHAIN_DIR" if supplied is not None else "toolchain/"
+        raise FileNotFoundError(f"{setting} is not an accessible directory: {root}")
+
+    if supplied is not None:
+        return root, True
 
     try:
-        root = Path(supplied).expanduser().resolve(strict=True)
-    except (OSError, RuntimeError) as exc:
-        raise FileNotFoundError(
-            f"SHOX_TOOLCHAIN_DIR cannot be accessed: {supplied!r}: {exc}"
-        ) from exc
-    if not root.is_dir() or not os.access(root, os.R_OK | os.X_OK):
-        raise FileNotFoundError(
-            f"SHOX_TOOLCHAIN_DIR is not an accessible directory: {root}"
-        )
-    return root, True
+        root.relative_to(ROOT.resolve())
+    except ValueError:
+        return root, True
+    return root, False
 
 
 def container_command(tool: str, args: list[str], host_cwd: Path) -> list[str]:
