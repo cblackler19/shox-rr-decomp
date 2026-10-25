@@ -1910,6 +1910,12 @@
       "source": "src/retail/0015/func_001505D0.cpp"
     },
     {
+      "name": "func_00153BB8",
+      "address": "0x00153BB8",
+      "size": "0x8",
+      "source": "src/retail/0015/func_00153BB8.cpp"
+    },
+    {
       "name": "func_00153BC0",
       "address": "0x00153BC0",
       "size": "0x18",
@@ -1920,6 +1926,12 @@
       "address": "0x00153BD8",
       "size": "0x18",
       "source": "src/retail/0015/func_00153BD8.cpp"
+    },
+    {
+      "name": "func_00153C98",
+      "address": "0x00153C98",
+      "size": "0x8",
+      "source": "src/retail/0015/func_00153C98.cpp"
     },
     {
       "name": "func_00153D38",
@@ -1958,10 +1970,28 @@
       "source": "src/retail/0015/func_00155A98.cpp"
     },
     {
+      "name": "func_00155AC8",
+      "address": "0x00155AC8",
+      "size": "0x8",
+      "source": "src/retail/0015/func_00155AC8.cpp"
+    },
+    {
       "name": "func_00155AD0",
       "address": "0x00155AD0",
       "size": "0x10",
       "source": "src/retail/0015/func_00155AD0.cpp"
+    },
+    {
+      "name": "func_00155AE0",
+      "address": "0x00155AE0",
+      "size": "0x8",
+      "source": "src/retail/0015/func_00155AE0.cpp"
+    },
+    {
+      "name": "func_00155B40",
+      "address": "0x00155B40",
+      "size": "0x8",
+      "source": "src/retail/0015/func_00155B40.cpp"
     },
     {
       "name": "func_00157B08",
@@ -1998,6 +2028,12 @@
       "address": "0x001590C0",
       "size": "0x20",
       "source": "src/retail/0015/func_001590C0.cpp"
+    },
+    {
+      "name": "func_00159110",
+      "address": "0x00159110",
+      "size": "0x8",
+      "source": "src/retail/0015/func_00159110.cpp"
     },
     {
       "name": "func_00159F30",
@@ -2048,6 +2084,12 @@
       "source": "src/retail/0016/func_00160118.cpp"
     },
     {
+      "name": "func_00160E20",
+      "address": "0x00160E20",
+      "size": "0x8",
+      "source": "src/retail/0016/func_00160E20.cpp"
+    },
+    {
       "name": "func_00160E28",
       "address": "0x00160E28",
       "size": "0x18",
@@ -2072,10 +2114,34 @@
       "source": "src/retail/0016/func_001647B0.cpp"
     },
     {
+      "name": "func_0016C0D0",
+      "address": "0x0016C0D0",
+      "size": "0x8",
+      "source": "src/retail/0016/func_0016C0D0.cpp"
+    },
+    {
+      "name": "func_0016C100",
+      "address": "0x0016C100",
+      "size": "0x8",
+      "source": "src/retail/0016/func_0016C100.cpp"
+    },
+    {
+      "name": "func_0016DD30",
+      "address": "0x0016DD30",
+      "size": "0x8",
+      "source": "src/retail/0016/func_0016DD30.cpp"
+    },
+    {
       "name": "func_00171E18",
       "address": "0x00171E18",
       "size": "0x20",
       "source": "src/retail/0017/func_00171E18.cpp"
+    },
+    {
+      "name": "func_00172AF0",
+      "address": "0x00172AF0",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00172AF0.cpp"
     },
     {
       "name": "func_00172C28",
@@ -2090,16 +2156,70 @@
       "source": "src/retail/0017/func_00172C48.cpp"
     },
     {
+      "name": "func_00172F58",
+      "address": "0x00172F58",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00172F58.cpp"
+    },
+    {
+      "name": "func_00172F60",
+      "address": "0x00172F60",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00172F60.cpp"
+    },
+    {
+      "name": "func_00172F68",
+      "address": "0x00172F68",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00172F68.cpp"
+    },
+    {
+      "name": "func_00172F70",
+      "address": "0x00172F70",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00172F70.cpp"
+    },
+    {
+      "name": "func_00172F78",
+      "address": "0x00172F78",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00172F78.cpp"
+    },
+    {
       "name": "func_00172F80",
       "address": "0x00172F80",
       "size": "0x18",
       "source": "src/retail/0017/func_00172F80.cpp"
     },
     {
+      "name": "func_00172FC8",
+      "address": "0x00172FC8",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00172FC8.cpp"
+    },
+    {
       "name": "func_00173108",
       "address": "0x00173108",
       "size": "0x20",
       "source": "src/retail/0017/func_00173108.cpp"
+    },
+    {
+      "name": "func_001747C0",
+      "address": "0x001747C0",
+      "size": "0x8",
+      "source": "src/retail/0017/func_001747C0.cpp"
+    },
+    {
+      "name": "func_001747C8",
+      "address": "0x001747C8",
+      "size": "0x8",
+      "source": "src/retail/0017/func_001747C8.cpp"
+    },
+    {
+      "name": "func_001747D0",
+      "address": "0x001747D0",
+      "size": "0x8",
+      "source": "src/retail/0017/func_001747D0.cpp"
     },
     {
       "name": "func_00174A70",
@@ -2144,10 +2264,34 @@
       "source": "src/retail/0017/func_001771B0.cpp"
     },
     {
+      "name": "func_00177208",
+      "address": "0x00177208",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00177208.cpp"
+    },
+    {
+      "name": "func_00177210",
+      "address": "0x00177210",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00177210.cpp"
+    },
+    {
+      "name": "func_00177220",
+      "address": "0x00177220",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00177220.cpp"
+    },
+    {
       "name": "func_001789C8",
       "address": "0x001789C8",
       "size": "0x10",
       "source": "src/retail/0017/func_001789C8.cpp"
+    },
+    {
+      "name": "func_00178A20",
+      "address": "0x00178A20",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00178A20.cpp"
     },
     {
       "name": "func_00178AC8",
@@ -2156,10 +2300,28 @@
       "source": "src/retail/0017/func_00178AC8.cpp"
     },
     {
+      "name": "func_00178B10",
+      "address": "0x00178B10",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00178B10.cpp"
+    },
+    {
+      "name": "func_00178C98",
+      "address": "0x00178C98",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00178C98.cpp"
+    },
+    {
       "name": "func_00178CA0",
       "address": "0x00178CA0",
       "size": "0x20",
       "source": "src/retail/0017/func_00178CA0.cpp"
+    },
+    {
+      "name": "func_00178D70",
+      "address": "0x00178D70",
+      "size": "0x8",
+      "source": "src/retail/0017/func_00178D70.cpp"
     },
     {
       "name": "func_00179A30",
