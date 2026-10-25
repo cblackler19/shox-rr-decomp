@@ -10,6 +10,21 @@ Reconstruct readable, plausible original C++ for the retail PlayStation 2 game *
 
 The maintainer alone handles integration into `main`, function registration, ByteMatch report publication, infrastructure changes, and any broader planning.
 
+### Luna's autonomous attempt policy
+
+For a Luna autonomous decompilation run, use one session ledger for the entire run at `build/agents/<worker-id>/session-skips.sqlite3`. A new file starts a fresh session; reusing that file resumes its exclusions. Do not delete, reset, or replace it to retry skipped functions. Keep the chosen minimum and maximum function sizes fixed throughout the run.
+
+Claim one function at a time. Make at most **six distinct C++ reconstruction and compilation/comparison attempts per function**. The claim manager does not count attempts; the worker must track them. Commit and complete a function only after exact `.text` byte and relocation verification. If a function fails to match or is unsuitable for normal C++ reconstruction, release it with the same `--session-file`; this makes it available to other workers while excluding it from this session. Then automatically claim the next unattempted function with the same size bounds. Never retry a session-skipped function unless explicitly authorised. Continue until the specified match target or a genuine blocker is reached.
+
+Example session commands (retain the same bounds and session path on each call):
+
+```sh
+session=build/agents/luna/session-skips.sqlite3
+python3 tools/objdiff/claim.py next --worker luna --session-file "$session" --min-size 8 --max-size 160
+python3 tools/objdiff/claim.py release func_XXXXXXXX --worker luna --session-file "$session"
+python3 tools/objdiff/claim.py session-status --worker luna --session-file "$session"
+```
+
 ## Non-negotiable restrictions
 
 - **Never modify infrastructure or metadata.** Do not edit, move, regenerate, stage, or commit anything under `tools/`, `scripts/`, `toolchain/`, `config/`, `.github/`, or any build scripts, linker scripts, manifests, requirements, `build.ninja`, `objdiff.json`, `.recomp.json`, `README.md`, or `AGENTS.md`. Running existing tools is permitted when their normal writes are confined to ignored build artifacts or the designated shared claim database.
@@ -49,12 +64,12 @@ If launched from `main` and worktree creation is unavailable, **do not edit or c
 
 **Repeat this workflow automatically until the default batch is complete or a legitimate stop condition occurs.** Check exit codes; do not silently ignore failures.
 
-1. **Claim first.** Run `python3 tools/objdiff/claim.py next --worker WORKER_ID --min-size 8 --max-size 128` (or explicitly claim a maintainer-specified target with `claim func_XXXXXXXX --worker WORKER_ID`). Never select a function by scanning decompilation targets before claiming. If unavailable/excluded, obtain another. Use the actual returned address, size, and symbol rather than guessing.
+1. **Claim first.** Run `python3 tools/objdiff/claim.py next --worker WORKER_ID --session-file build/agents/WORKER_ID/session-skips.sqlite3 --min-size 8 --max-size 128` (or explicitly claim a maintainer-specified target with `claim func_XXXXXXXX --worker WORKER_ID --session-file build/agents/WORKER_ID/session-skips.sqlite3`). Keep the size bounds fixed for the run. Never select a function by scanning decompilation targets before claiming. If unavailable/excluded, obtain another. Use the actual returned address, size, and symbol rather than guessing.
 2. **Inspect the claimed function.** Check its exact address and bounds, original instructions, branch/delay-slot behaviour, symbols and relevant relocations. Read only the context needed to reconstruct it; avoid large disassembly dumps.
 3. **Write plausible C++.** Create exactly `src/retail/HHHH/func_XXXXXXXX.cpp` with the expected symbol and suitable linkage (`extern "C"` where appropriate). Preserve the original calling convention and prefer readable source over unnatural compiler manipulation. Confirm the intended path does not already contain someone else's work.
 4. **Compile and extract the reference** with the *existing* original compiler and flags. Use the standalone example below. Do not register functions or regenerate tracked configuration.
 5. **Verify independently.** Compare function size, `.text` bytes, symbol and disassembly against retail. Use objdiff as a diagnostic, not as the sole proof. For relocation-bearing code, inspect both relocation tables and types, offsets, addends/targets as applicable, and reason about resolved instruction equivalence. Raw byte equality is sufficient only where the relevant code has no unresolved relocation differences. If you cannot establish exactness, do **not** commit or mark complete.
-6. **Iterate efficiently.** Try reasonable source changes, but don't burn most of the session on one stubborn function. If progress stalls, preserve any candidate and notes in your own ignored scratch directory; remove only an untracked candidate file **you created in this attempt** once its contents are safely preserved, and release your own claim using `claim.py release`. Don't leave a released function's uncommitted source in a shared checkout. Heartbeat your claim during long investigations with `claim.py heartbeat`.
+6. **Iterate efficiently.** Make at most six distinct reconstruction and compilation/comparison attempts per function. If progress stalls or the function is unsuitable for normal C++ reconstruction, preserve any candidate and notes in your own ignored scratch directory; remove only an untracked candidate file **you created in this attempt** once its contents are safely preserved, and release your own claim using `claim.py release ... --session-file build/agents/WORKER_ID/session-skips.sqlite3`. Don't leave a released function's uncommitted source in a shared checkout. The release records a session exclusion; immediately claim the next function with the same session file and unchanged size bounds. Do not retry a session-skipped function unless explicitly authorised. Heartbeat your claim during long investigations with `claim.py heartbeat`.
 7. **Commit one match.** Stage only the claimed `.cpp`; check `git diff --cached --name-only` (must show exactly one intended source) and `git diff --cached --check`, then commit: `feat: func_XXXXXXXX N/N bytes exact-matched`. Never disguise a partial match as exact.
 8. **Complete the claim after committing.** Obtain the full SHA with `git rev-parse HEAD`, then run `python3 tools/objdiff/claim.py complete func_XXXXXXXX --worker WORKER_ID --bytes N --commit FULL_40_CHARACTER_SHA`. Verify success. `complete` checks files and size, **not machine-code equality**: you are responsible for the prior verification. If completion fails, investigate without committing unrelated changes or changing another worker's ledger state. Do not count the claim as completed until the command succeeds.
 9. **Continue immediately** with the next claim. Keep a compact running tally of exact matches, verified bytes, individual commits, skipped/blocked candidates and pending registrations. Do not ask whether to proceed after each success.
@@ -92,12 +107,13 @@ Consult `python3 tools/objdiff/claim.py --help` and subcommand help for the cano
 
 ```sh
 python3 tools/objdiff/claim.py status --claimed
-python3 tools/objdiff/claim.py next --worker solo-round6-1 --min-size 8 --max-size 128
+python3 tools/objdiff/claim.py next --worker solo-round6-1 --session-file build/agents/solo-round6-1/session-skips.sqlite3 --min-size 8 --max-size 128
 python3 tools/objdiff/claim.py heartbeat func_XXXXXXXX --worker solo-round6-1
 # After independent verification, one-file commit and obtaining the full SHA:
 python3 tools/objdiff/claim.py complete func_XXXXXXXX --worker solo-round6-1 --bytes N --commit FULL_SHA
 # Or if abandoning an attempt (never both complete and release):
-python3 tools/objdiff/claim.py release func_XXXXXXXX --worker solo-round6-1
+python3 tools/objdiff/claim.py release func_XXXXXXXX --worker solo-round6-1 --session-file build/agents/solo-round6-1/session-skips.sqlite3
+python3 tools/objdiff/claim.py session-status --worker solo-round6-1 --session-file build/agents/solo-round6-1/session-skips.sqlite3
 ```
 
 Never recover or steal a claim belonging to someone else. Never delete the database as a shortcut to free claims.
