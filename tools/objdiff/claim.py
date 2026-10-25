@@ -13,6 +13,7 @@ import re
 import sqlite3
 import subprocess
 import sys
+import uuid
 from pathlib import Path
 try:
     from .source_paths import retail_source_file_for_name, retail_source_path_for_name
@@ -43,6 +44,57 @@ def paths(args: argparse.Namespace) -> tuple[Path, Path, Path]:
     database = Path(args.db or os.environ.get('SHOX_CLAIMS_DB') or common / 'shox-function-claims.sqlite3').expanduser().resolve()
     inventory = Path(args.inventory).expanduser().resolve() if args.inventory else main_root / 'asm/retail/text.s'
     return database, inventory, main_root
+
+
+def repository_identity() -> str:
+    return str(Path(git('rev-parse', '--path-format=absolute', '--git-common-dir')).resolve())
+
+
+def open_session(path: str, worker: str, *, create: bool = True) -> tuple[sqlite3.Connection, str]:
+    """Open a session ledger and reject accidental reuse across repo/worker boundaries."""
+    session_path = Path(path).expanduser().resolve()
+    existed = session_path.exists()
+    if not existed and not create:
+        raise ValueError(f'Session file does not exist: {session_path}')
+    session_path.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(session_path, timeout=30, isolation_level=None)
+    conn.row_factory = sqlite3.Row
+    conn.execute('PRAGMA busy_timeout=30000')
+    try:
+        conn.execute('BEGIN IMMEDIATE')
+        tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        if not tables:
+            conn.execute('''CREATE TABLE session_meta (
+                singleton INTEGER PRIMARY KEY CHECK(singleton=1),
+                schema_version INTEGER NOT NULL, repository_identity TEXT NOT NULL,
+                worker_identity TEXT NOT NULL, session_identity TEXT NOT NULL,
+                created_at TEXT NOT NULL)''')
+            conn.execute('''CREATE TABLE exclusions (
+                function_name TEXT PRIMARY KEY, excluded_at TEXT NOT NULL,
+                state TEXT NOT NULL CHECK(state IN ('pending','skipped')),
+                attempt_id TEXT)''')
+            conn.execute('INSERT INTO session_meta VALUES(1,1,?,?,?,?)',
+                         (repository_identity(), worker, str(uuid.uuid4()), stamp()))
+        elif tables != {'session_meta', 'exclusions'}:
+            raise ValueError(f'Session file has an unsupported or incomplete schema: {session_path}')
+        meta = conn.execute('SELECT * FROM session_meta WHERE singleton=1').fetchone()
+        if meta is None or meta['schema_version'] != 1:
+            raise ValueError(f'Session file has unsupported metadata: {session_path}')
+        if meta['repository_identity'] != repository_identity():
+            raise ValueError('Session file belongs to a different Git repository')
+        if meta['worker_identity'] != worker:
+            raise ValueError(f"Session file belongs to worker {meta['worker_identity']}, not {worker}")
+        conn.execute('COMMIT')
+        return conn, meta['session_identity']
+    except BaseException:
+        if conn.in_transaction:
+            conn.execute('ROLLBACK')
+        conn.close()
+        raise
+
+
+def add_session_option(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument('--session-file', help='Optional session-scoped SQLite exclusion ledger')
 
 
 def functions_from_assembly(path: Path) -> list[tuple[str, int, int]]:
@@ -139,13 +191,22 @@ def main() -> int:
     p.add_argument('--worker', type=worker_name, required=True)
     p.add_argument('--min-size', type=int, default=8)
     p.add_argument('--max-size', type=int, default=128)
+    add_session_option(p)
     p = sub.add_parser('claim', help='Claim a specific function')
     p.add_argument('name', type=normal_name)
     p.add_argument('--worker', type=worker_name, required=True)
+    add_session_option(p)
+    p.add_argument('--allow-session-skipped', action='store_true',
+                   help='Allow explicit claim of a session-skipped function')
     for op in ('release', 'heartbeat'):
         p = sub.add_parser(op)
         p.add_argument('name', type=normal_name)
         p.add_argument('--worker', type=worker_name, required=True)
+        if op == 'release':
+            add_session_option(p)
+    p = sub.add_parser('session-status', help='List exclusions in a session ledger')
+    p.add_argument('--worker', type=worker_name, required=True)
+    p.add_argument('--session-file', required=True)
     p = sub.add_parser('complete', help='Record an independently verified exact match')
     p.add_argument('name', type=normal_name)
     p.add_argument('--worker', type=worker_name, required=True)
@@ -158,6 +219,19 @@ def main() -> int:
     p.add_argument('--claimed', action='store_true', help='List active claims')
     args = ap.parse_args()
     try:
+        session = None
+        session_path = getattr(args, 'session_file', None)
+        if session_path:
+            session, _ = open_session(session_path, args.worker,
+                                      create=args.command != 'session-status')
+        if args.command == 'session-status':
+            try:
+                for r in session.execute('SELECT function_name,excluded_at,state FROM exclusions ORDER BY excluded_at,function_name'):
+                    print(f"{r['function_name']} | {r['state']} | {r['excluded_at']}")
+                print(f'Session: {Path(session_path).expanduser().resolve()}')
+            finally:
+                session.close()
+            return 0
         db, inventory, root = paths(args)
         db.parent.mkdir(parents=True, exist_ok=True)
         conn = sqlite3.connect(db, timeout=30, isolation_level=None)
@@ -180,11 +254,27 @@ def main() -> int:
                 raise ValueError('Invalid size range')
             if args.command == 'recover' and args.older_than < 0:
                 raise ValueError('--older-than must be nonnegative')
+            if session is not None:
+                conn.execute('ATTACH DATABASE ? AS session_db', (str(Path(session_path).expanduser().resolve()),))
+            release_attempt = None
+            release_inserted = False
+            shared_released = False
+            if args.command == 'release' and session is not None:
+                # Cross-database commits cannot be atomic here (the shared ledger uses WAL).
+                # Persist pending first so a crash after shared release still excludes it.
+                release_attempt = str(uuid.uuid4())
+                session.execute('BEGIN IMMEDIATE')
+                cur = session.execute('''INSERT OR IGNORE INTO exclusions
+                    (function_name,excluded_at,state,attempt_id) VALUES(?,?, 'pending',?)''',
+                    (args.name, stamp(), release_attempt))
+                release_inserted = cur.rowcount == 1
+                session.execute('COMMIT')
             conn.execute('BEGIN IMMEDIATE')
             if args.command == 'next':
-                r = conn.execute("SELECT * FROM functions WHERE state='available' AND size BETWEEN ? AND ? ORDER BY size,address LIMIT 1", (args.min_size, args.max_size)).fetchone()
+                exclusion = " AND NOT EXISTS (SELECT 1 FROM session_db.exclusions s WHERE s.function_name=functions.name)" if session is not None else ''
+                r = conn.execute("SELECT * FROM functions WHERE state='available' AND size BETWEEN ? AND ?" + exclusion + " ORDER BY size,address LIMIT 1", (args.min_size, args.max_size)).fetchone()
                 if r is None:
-                    raise ValueError('No available functions in requested size range')
+                    raise ValueError('No unskipped available functions in requested size range' if session is not None else 'No available functions in requested size range')
                 name = r['name']
             else:
                 name = args.name
@@ -193,6 +283,10 @@ def main() -> int:
                     raise ValueError(f'Function not in inventory: {name}')
             now = stamp()
             if args.command in ('next', 'claim'):
+                if args.command == 'claim' and session is not None and not args.allow_session_skipped:
+                    skipped = conn.execute('SELECT 1 FROM session_db.exclusions WHERE function_name=?', (name,)).fetchone()
+                    if skipped:
+                        raise ValueError(f'{name} is skipped in this session (use --allow-session-skipped to override)')
                 if r['state'] != 'available':
                     raise ValueError(f"{name} is {r['state']}" + (f" (owner={r['worker']})" if r['worker'] else ''))
                 # Guard against an existing main-checkout source produced since DB seeding.
@@ -225,11 +319,31 @@ def main() -> int:
                     raise ValueError(f'{name} heartbeat is only {age:.0f}s old, require {args.older_than}s')
                 conn.execute("UPDATE functions SET state='available',worker=NULL,claimed_at=NULL,updated_at=?,note=? WHERE name=?", (now, f'Manually recovered after {age:.0f} seconds', name))
             conn.execute('COMMIT')
+            if args.command == 'release' and session is not None:
+                shared_released = True
+                session.execute('BEGIN IMMEDIATE')
+                session.execute("UPDATE exclusions SET state='skipped',attempt_id=NULL WHERE function_name=?", (name,))
+                session.execute('COMMIT')
             print(f'{args.command.upper()}:', end=' ')
             show(conn.execute('SELECT * FROM functions WHERE name=?', (name,)).fetchone())
             return 0
+        except BaseException as original_error:
+            if conn.in_transaction:
+                conn.execute('ROLLBACK')
+            if args.command == 'release' and session is not None and release_inserted and not shared_released:
+                try:
+                    session.execute('BEGIN IMMEDIATE')
+                    session.execute("DELETE FROM exclusions WHERE function_name=? AND state='pending' AND attempt_id=?", (args.name, release_attempt))
+                    session.execute('COMMIT')
+                except sqlite3.Error as cleanup_error:
+                    if session.in_transaction:
+                        session.execute('ROLLBACK')
+                    raise RuntimeError(f'{original_error}; could not clear pending session exclusion: {cleanup_error}') from original_error
+            raise
         finally:
             conn.close()
+            if session is not None:
+                session.close()
     except (OSError, RuntimeError, ValueError, sqlite3.Error) as exc:
         print(f'ERROR: {exc}', file=sys.stderr)
         return 1
