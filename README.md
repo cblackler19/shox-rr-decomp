@@ -35,11 +35,13 @@ python3 tools/compiler/run.py ee-as.exe --version
 python3 tools/compiler/run.py ee-objdump.exe --version
 ```
 
+Registered retail sources live in `src/retail/HHHH/`, where `HHHH` is the first four uppercase hexadecimal digits of the function address. For example, `func_00147E50` is stored at `src/retail/0014/func_00147E50.cpp`. Use `python3 tools/objdiff/manage.py add ADDRESS SIZE` to register a function; the manifest generator assigns this path automatically.
+
 The wrapper accepts the usual compiler arguments and maps absolute paths inside the repository into the container:
 
 ```sh
 python3 tools/compiler/run.py ee-gcc295.exe -O2 -G8 -mabi=eabi \
-  -c src/retail/func_00147E50.cpp -o build/linux-test/func_00147E50.o
+  -c src/retail/0014/func_00147E50.cpp -o build/linux-test/func_00147E50.o
 ```
 
 ## Build and compare

@@ -19,7 +19,7 @@ Reconstruct readable, plausible original C++ for retail Shox: Rally Reinvented (
 
 ## Permitted scope
 - Read any project source, original ELF and Splat output already on the machine; inspect disassembly; run the existing .venv, existing Python tools (especially tools/objdiff/claim.py, compare.py and extract_reference.py), Ninja diagnostics, the SN Systems tools through `python3 tools/compiler/run.py`, native `objdiff-cli`, and Git read commands. Running claim.py intentionally updates its shared ignored SQLite database; this is explicitly permitted and does not authorise changing the script itself.
-- Create or modify ONLY an assigned src/retail/func_XXXXXXXX.cpp source file. Do not edit any other tracked path. Use ignored build/agents/worker-N/ for all scratch objects and reference assembly.
+- Create or modify ONLY an assigned `src/retail/HHHH/func_XXXXXXXX.cpp` source file. `HHHH` is the first four uppercase hexadecimal digits of the function address. Do not edit any other tracked path. Use ignored build/agents/worker-N/ for all scratch objects and reference assembly.
 - Use tools/objdiff/compare.py for functions already registered in config/retail/functions.json; it is allowed to run existing build commands that write ignored artifacts, but never commands that rewrite tracked configuration.
 - New unregistered functions may be extracted, compiled and compared standalone WITHOUT registering them; tell the maintainer that registration and ByteMatch report regeneration remain pending.
 - Make verified single-file commits on a dedicated non-main feature branch and optionally push that branch to origin. Never create a PR.
@@ -28,11 +28,11 @@ Reconstruct readable, plausible original C++ for retail Shox: Rally Reinvented (
 1. Check git status --short and current branch. Never work on main. Preserve unrelated edits. Obtain a function with the shared atomic claimer **before** reading it as an assignment or creating/editing its source: `python3 tools/objdiff/claim.py next --worker WORKER_ID --min-size 8 --max-size 128` (or `python3 tools/objdiff/claim.py claim func_XXXXXXXX --worker WORKER_ID`). If claiming fails or reports unavailable/excluded, do not work on that function; claim another.
 2. Work only on the function actively claimed by your unique worker ID. Confirm exact name, address, size, function limits, original instructions and whether it references external symbols. Never select targets by scanning files without claiming them first.
 3. Infer sensible C++ signatures/control flow/types from the retail instructions. Work toward readable original-style C++, not artificial opcode matching.
-4. Create exactly one src/retail/func_XXXXXXXX.cpp; use the required symbol name (extern C when appropriate). Do not touch headers or any other tracked file.
-5. Compile with existing manifest compiler/flags (currently `python3 tools/compiler/run.py ee-gcc295.exe -O2 -G8 -mabi=eabi`). Do not change them. Extract a standalone reference using `python3 tools/objdiff/extract_reference.py ADDRESS SIZE OUTPUT`, assemble with `python3 tools/compiler/run.py ee-as.exe -G8 -mabi=eabi`, and run native `objdiff-cli diff -1 REFERENCE -2 CANDIDATE -o - --format json SYMBOL`.
+4. Create exactly one `src/retail/HHHH/func_XXXXXXXX.cpp`, where `HHHH` is the first four uppercase hex digits of the claimed address; use the required symbol name (extern C when appropriate). Do not touch headers or any other tracked file.
+5. Compile with existing manifest compiler/flags (currently `python3 tools/compiler/run.py ee-gcc295.exe -O2 -G8 -mabi=eabi`). Do not change them. Set `source="src/retail/${name:5:4}/$name.cpp"`, then extract a standalone reference using `python3 tools/objdiff/extract_reference.py ADDRESS SIZE OUTPUT`, assemble with `python3 tools/compiler/run.py ee-as.exe -G8 -mabi=eabi`, and run native `objdiff-cli diff -1 REFERENCE -2 CANDIDATE -o - --format json SYMBOL`.
 6. Compare the actual .text bytes, their lengths and symbols with the original reference. The existing read-only compare.read_text_section helper may be imported via Python; do not modify it. Both target and candidate must have the verified function size and identical .text content. For relocation-bearing code, also inspect relocation tables with `python3 tools/compiler/run.py ee-objdump.exe -r` or `-dr` and confirm meaningful equivalence. Do not assert a full exact match when relocations remain unresolved.
 7. Iterate C++ until exact; if blocked, record the mismatch and release the claim with `python3 tools/objdiff/claim.py release func_XXXXXXXX --worker WORKER_ID` after safely preserving the unresolved source outside another worker's checkout. Do not claim success or leave stale ownership. If a job takes a long time, refresh ownership with `python3 tools/objdiff/claim.py heartbeat func_XXXXXXXX --worker WORKER_ID` periodically.
-8. If exact, stage ONLY that file with git add -- src/retail/func_XXXXXXXX.cpp, inspect git diff --cached --name-only and --check, and commit with an accurate message: feat: func_XXXXXXXX N/N bytes exact-matched. Use fix: for an authorised correction to an existing source; chore: only for explicitly authorised non-function upkeep. No progress or WIP commits falsely claiming a match.
+8. If exact, stage ONLY that file with `git add -- "$source"`, inspect `git diff --cached --name-only` and `--check`, and commit with an accurate message: `feat: func_XXXXXXXX N/N bytes exact-matched`. Use `fix:` for an authorised correction to an existing source; `chore:` only for explicitly authorised non-function upkeep. No progress or WIP commits falsely claiming a match.
 9. Only after exact byte + relocation verification and a successful single-file commit, record completion with `python3 tools/objdiff/claim.py complete func_XXXXXXXX --worker WORKER_ID --bytes N --commit FULL_40_CHARACTER_SHA`. Check its exit code; a failed completion is NOT a completed claim. Report address, bytes, comparison, relocation status, source, commit SHA and branch. If new/unregistered, explicitly state: 'Locally byte-matched; maintainer registration and ByteMatch publication pending.' Then immediately claim the next function and continue autonomously, unless told to stop or genuinely blocked.
 
 ## Mandatory claim lifecycle
@@ -61,11 +61,12 @@ Use a unique scratch directory per worker and substitute VERIFIED address/size/n
 name=func_XXXXXXXX
 addr=0x00123456
 size=0x20
+source="src/retail/${name:5:4}/$name.cpp"
 dir="build/agents/worker-1/$name"
 mkdir -p "$dir"
 python3 tools/objdiff/extract_reference.py "$addr" "$size" "$dir/ref.s"
 python3 tools/compiler/run.py ee-as.exe -G8 -mabi=eabi -o "$dir/ref.o" "$dir/ref.s"
-python3 tools/compiler/run.py ee-gcc295.exe -O2 -G8 -mabi=eabi -c -o "$dir/base.o" "src/retail/$name.cpp"
+python3 tools/compiler/run.py ee-gcc295.exe -O2 -G8 -mabi=eabi -c -o "$dir/base.o" "$source"
 objdiff-cli diff -1 "$dir/ref.o" -2 "$dir/base.o" -o - --format json "$name"
 ```
 

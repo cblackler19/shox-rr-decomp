@@ -14,6 +14,10 @@ import sqlite3
 import subprocess
 import sys
 from pathlib import Path
+try:
+    from .source_paths import retail_source_file_for_name, retail_source_path_for_name
+except ImportError:  # Direct script execution puts tools/objdiff on sys.path.
+    from source_paths import retail_source_file_for_name, retail_source_path_for_name
 
 PATTERN = re.compile(r"^\s*nonmatching\s+func_([0-9A-Fa-f]{8}),\s*0x([0-9A-Fa-f]+)\s*$", re.M)
 SYMBOL = re.compile(r"^func_([0-9A-Fa-f]{8})$")
@@ -192,7 +196,7 @@ def main() -> int:
                 if r['state'] != 'available':
                     raise ValueError(f"{name} is {r['state']}" + (f" (owner={r['worker']})" if r['worker'] else ''))
                 # Guard against an existing main-checkout source produced since DB seeding.
-                if (root / 'src/retail' / (name + '.cpp')).is_file():
+                if retail_source_file_for_name(name, root).is_file():
                     conn.execute("UPDATE functions SET state='excluded', updated_at=?,note=? WHERE name=?", (now, 'Source exists in main checkout', name))
                     conn.execute('COMMIT')
                     raise ValueError(f'{name} already has a source in main checkout; excluded, request another')
@@ -208,7 +212,7 @@ def main() -> int:
                     if args.bytes != r['size']:
                         raise ValueError(f"Claimed function is {r['size']} bytes, not {args.bytes}")
                     changed = [p.strip() for p in git('diff-tree', '--no-commit-id', '--name-only', '-r', args.commit, cwd=root).splitlines() if p.strip()]
-                    expected = f'src/retail/{name}.cpp'
+                    expected = retail_source_path_for_name(name)
                     if changed != [expected]:
                         raise ValueError(f'Commit must change exactly {expected}; actually changed: {changed}')
                     conn.execute("UPDATE functions SET state='completed',worker=NULL,updated_at=?,commit_sha=?,note=? WHERE name=?", (now, args.commit, f'Worker {args.worker} attests exact {args.bytes}/{args.bytes} bytes; external audit required', name))

@@ -7,6 +7,10 @@ import json
 import re
 import sys
 from pathlib import Path, PurePosixPath
+try:
+    from .source_paths import retail_source_path, retail_source_path_for_name
+except ImportError:  # Direct script execution puts tools/objdiff on sys.path.
+    from source_paths import retail_source_path, retail_source_path_for_name
 
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "config/retail/functions.json"
@@ -128,6 +132,12 @@ def validate(manifest, allow_missing_source=False):
 
         if address != int(name[5:], 16):
             raise ValueError(f"{name}: name/address mismatch")
+
+        expected_source = retail_source_path(address)
+        if source != expected_source:
+            raise ValueError(
+                f"{name}: source path must be {expected_source!r}, got {source!r}"
+            )
 
         if address % 4 or size <= 0 or size % 4:
             raise ValueError(f"{name}: invalid address or size")
@@ -316,15 +326,9 @@ def add_function(manifest, address, size):
     # Validate the existing registry before changing anything.
     validate(manifest)
 
-    name = f"func_{address:08X}"
-    source = f"src/retail/{name}.cpp"
-
-    entry = {
-        "name": name,
-        "address": f"0x{address:08X}",
-        "size": f"0x{size:X}",
-        "source": source,
-    }
+    entry = make_function_entry(address, size)
+    name = entry["name"]
+    source = entry["source"]
 
     if any(item["name"] == name for item in manifest["functions"]):
         raise ValueError(f"Already registered: {name}")
@@ -376,6 +380,17 @@ def add_function(manifest, address, size):
     print(f"Source:  {source}")
     print()
     print(f"Next: python3 tools/objdiff/compare.py {name}")
+
+
+def make_function_entry(address, size):
+    """Build a new manifest entry using the canonical nested source path."""
+    name = f"func_{address:08X}"
+    return {
+        "name": name,
+        "address": f"0x{address:08X}",
+        "size": f"0x{size:X}",
+        "source": retail_source_path_for_name(name),
+    }
 
 
 def main():
