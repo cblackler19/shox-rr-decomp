@@ -5,6 +5,7 @@
 import argparse
 import hashlib
 import shutil
+import shlex
 import subprocess
 import sys
 from pathlib import Path
@@ -13,9 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 PYTHON = sys.executable
 
-TOOLCHAIN = ROOT / "toolchain/eegcc_sn_v2.73a/bin"
-ASSEMBLER = TOOLCHAIN / "ee-as.exe"
-LINKER = TOOLCHAIN / "ee-ld.exe"
+SN_RUNNER = ROOT / "tools/compiler/run.py"
 
 RETAIL_ELF = ROOT / "baserom/SHOX.ELF"
 SPLAT_CONFIG = ROOT / "config/retail/splat.yaml"
@@ -70,7 +69,7 @@ EXPECTED_ASSETS = {
 def run(*command):
     command = [str(part) for part in command]
 
-    print(f"  $ {subprocess.list2cmdline(command)}", flush=True)
+    print(f"  $ {shlex.join(command)}", flush=True)
 
     subprocess.run(
         command,
@@ -91,8 +90,8 @@ def sha256(data: bytes) -> str:
 def verify_inputs():
     require_file(RETAIL_ELF)
     require_file(SPLAT_CONFIG)
-    require_file(ASSEMBLER)
-    require_file(LINKER)
+    require_file(ROOT / "toolchain/eegcc_sn_v2.73a/bin/ee-as.exe")
+    require_file(ROOT / "toolchain/eegcc_sn_v2.73a/bin/ee-ld.exe")
     require_file(LINKER_SCRIPT)
 
     source = RETAIL_ELF.read_bytes()
@@ -118,8 +117,8 @@ def verify_inputs():
 
 def find_splat() -> Path:
     candidates = [
-        Path(PYTHON).parent / "splat.exe",
-        ROOT / ".venv/Scripts/splat.exe",
+        Path(PYTHON).parent / "splat",
+        ROOT / ".venv/bin/splat",
     ]
 
     for candidate in candidates:
@@ -195,7 +194,9 @@ def convert_and_assemble():
         )
 
         run(
-            ASSEMBLER,
+            PYTHON,
+            SN_RUNNER,
+            "ee-as.exe",
             "-G8",
             "-mabi=eabi",
             "-I",
@@ -228,7 +229,9 @@ def build_assets():
 
 def link():
     run(
-        LINKER,
+        PYTHON,
+        SN_RUNNER,
+        "ee-ld.exe",
         "-Map",
         OUTPUT_MAP,
         "-T",

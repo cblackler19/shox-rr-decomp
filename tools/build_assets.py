@@ -4,7 +4,7 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parent.parent
 
-ASSEMBLER = ROOT / "toolchain/eegcc_sn_v2.73a/bin/ee-as.exe"
+RUNNER = ROOT / "tools/compiler/run.py"
 ASSETS = ROOT / "build/retail/assets"
 
 
@@ -33,7 +33,9 @@ def main():
 
         subprocess.run(
             [
-                str(ASSEMBLER),
+                "python3",
+                str(RUNNER),
+                "ee-as.exe",
                 "-mabi=eabi",
                 "-o",
                 str(output),

@@ -5,7 +5,7 @@
     "size": "0x001D47C4"
   },
   "compiler": {
-    "executable": "toolchain/eegcc_sn_v2.73a/bin/ee-gcc295.exe",
+    "executable": "ee-gcc295.exe",
     "flags": [
       "-O2",
       "-G8",

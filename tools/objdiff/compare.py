@@ -4,13 +4,14 @@
 
 import argparse
 import json
+import os
+import shutil
 import struct
 import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-OBJDIFF = ROOT / "toolchain" / "objdiff-cli.exe"
 BUILD = ROOT / "build" / "objdiff"
 
 ELF_HEADER = struct.Struct("<16sHHIIIIIHHHHHH")
@@ -24,6 +25,28 @@ def run(command: list[str], *, capture: bool = False):
         check=True,
         text=True,
         capture_output=capture,
+    )
+
+
+def find_objdiff() -> Path:
+    """Find a native objdiff-cli executable without assuming a .exe path."""
+    configured = os.environ.get("SHOX_OBJDIFF")
+    candidates = [Path(configured)] if configured else []
+    candidates += [ROOT / "toolchain/objdiff-cli", ROOT / ".venv/bin/objdiff-cli"]
+    found = shutil.which("objdiff-cli")
+    if found:
+        candidates.append(Path(found))
+
+    for candidate in candidates:
+        candidate = candidate.expanduser()
+        if not candidate.is_absolute():
+            candidate = ROOT / candidate
+        if candidate.is_file() and os.access(candidate, os.X_OK):
+            return candidate.resolve()
+
+    raise FileNotFoundError(
+        "Native objdiff-cli not found. Install it on PATH or set SHOX_OBJDIFF "
+        "to its executable path. Windows .exe files are not run natively."
     )
 
 
@@ -182,13 +205,12 @@ def compare(name: str) -> bool:
     target = BUILD / "target" / f"{name}.o"
     base = BUILD / "base" / f"{name}.o"
 
-    if not OBJDIFF.is_file():
-        raise FileNotFoundError(f"Missing objdiff CLI: {OBJDIFF}")
+    objdiff = find_objdiff()
 
     print(f"Building {name}...", flush=True)
 
     run([
-        "ninja",
+        shutil.which("ninja") or "ninja",
         "-f",
         "build.ninja",
         target.relative_to(ROOT).as_posix(),
@@ -201,7 +223,7 @@ def compare(name: str) -> bool:
     print(f"Building {name}...", flush=True)
 
     run([
-        "ninja",
+        shutil.which("ninja") or "ninja",
         "-f",
         "build.ninja",
         base.relative_to(ROOT).as_posix(),
@@ -211,7 +233,7 @@ def compare(name: str) -> bool:
         raise FileNotFoundError(f"Missing compiled object: {base}")
 
     result = run([
-        str(OBJDIFF),
+        str(objdiff),
         "diff",
         "-1", str(target),
         "-2", str(base),
