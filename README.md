@@ -23,7 +23,17 @@ docker build -t shox-sn-gcc docker/sn-gcc
 
 Docker must be able to access the daemon. On SELinux systems, the runner mounts this repository with `:z` so the container can read the local toolchain and write build outputs. Docker may relabel files under this repository for shared container access; do not apply `:z` to unrelated or external directories. The toolchain is mounted at runtime and is not embedded in the image.
 
-The runner uses short lived Docker containers and a persistent, repository-specific named Docker volume for the initialized 32-bit Wine prefix. It serializes calls that share the prefix so concurrent Ninja jobs queue safely rather than racing Wine state. Each call still gets its own container; this avoids a background compiler service and keeps lifecycle handling simple. Container processes run as the invoking host UID/GID so generated objects remain user-owned.
+The default `docker-wine` backend uses short lived Docker containers and a persistent, repository-specific named Docker volume for the initialized 32-bit Wine prefix. It serializes calls that share the prefix so concurrent Ninja jobs queue safely rather than racing Wine state. Container processes run as the invoking host UID/GID so generated objects remain user-owned.
+
+An opt-in `docker-wine-pool` backend reuses independent persistent containers and 32-bit Wine prefixes. It leases each worker with its own cross-process lock, and scopes workers to the Git common directory **and** checkout path so linked worktrees never share build mounts. A persistent Wine server removes repeated Wine startup cost. The pool has four workers by default; set `SHOX_TOOLCHAIN_POOL_SIZE` to tune it. Initialize, inspect and stop the containers with:
+
+```sh
+SHOX_TOOLCHAIN_BACKEND=docker-wine-pool python3 tools/compiler/run.py --pool-action init
+SHOX_TOOLCHAIN_BACKEND=docker-wine-pool python3 tools/compiler/run.py --pool-action status
+SHOX_TOOLCHAIN_BACKEND=docker-wine-pool python3 tools/compiler/run.py --pool-action shutdown
+```
+
+`shutdown` removes the containers but deliberately retains their named Wine-prefix volumes. To use the pool with Ninja, export `SHOX_TOOLCHAIN_BACKEND=docker-wine-pool` before invoking it.
 
 The selected backend defaults to `docker-wine`; `SHOX_TOOLCHAIN_BACKEND=docker-wine` can be set explicitly. The wrapper reports an error for unavailable backends rather than silently invoking an executable another way.
 

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import fcntl
 import hashlib
 import os
@@ -12,11 +13,13 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 
 ROOT = Path(__file__).resolve().parents[2]
 TOOLCHAIN_RELATIVE = Path("eegcc_sn_v2.73a") / "bin"
 IMAGE = os.environ.get("SHOX_SN_GCC_IMAGE", "shox-sn-gcc")
 BACKEND = os.environ.get("SHOX_TOOLCHAIN_BACKEND", "docker-wine")
+POOL_SIZE = int(os.environ.get("SHOX_TOOLCHAIN_POOL_SIZE", "4"))
 CONTAINER_ROOT = Path("/workspace")
 
 
@@ -185,20 +188,227 @@ def run_with_prefix(command: list[str]) -> int:
         return subprocess.run(command, cwd=ROOT).returncode
 
 
+def pool_identity() -> str:
+    """Scope containers and prefixes to this worktree, image, and user."""
+    material = "\0".join((repo_identity(), str(ROOT.resolve()), IMAGE, str(os.getuid())))
+    return hashlib.sha256(material.encode("utf-8")).hexdigest()[:16]
+
+
+def pool_paths(index: int) -> tuple[str, str, Path]:
+    identity = pool_identity()
+    state_dir = Path(tempfile.gettempdir()) / f"shox-winepool-{os.getuid()}-{identity}"
+    state_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
+    return (
+        f"shox-winepool-{identity}-worker-{index}",
+        f"shox-winepool-{identity}-prefix-{index}",
+        state_dir / f"worker-{index}.lock",
+    )
+
+
+def pool_docker_base(index: int) -> tuple[list[str], str, str, Path]:
+    docker = shutil.which("docker")
+    if not docker:
+        raise RuntimeError("Docker is required for the docker-wine-pool toolchain backend")
+    name, volume, lock = pool_paths(index)
+    return [docker], name, volume, lock
+
+
+def pool_ensure_worker(index: int) -> tuple[str, str, bool]:
+    """Create and initialize one isolated persistent container/prefix if needed."""
+    docker_cmd, name, volume, _ = pool_docker_base(index)
+    docker = docker_cmd[0]
+    uid, gid = os.getuid(), os.getgid()
+    toolchain_root, mount_toolchain = toolchain_location()
+    inspect = subprocess.run(
+        [docker, "container", "inspect", name], stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    exists = inspect.returncode == 0
+    created = not exists
+    if not exists:
+        # volume create is idempotent and avoids inspecting an unrelated volume.
+        subprocess.run([docker, "volume", "create", volume], check=True,
+                       stdout=subprocess.DEVNULL)
+        chown = [docker, "run", "--rm", "--user", "0:0", "-v",
+                 f"{volume}:/wineprefix", "--entrypoint", "/bin/chown", IMAGE, "-R",
+                 f"{uid}:{gid}", "/wineprefix"]
+        subprocess.run(chown, check=True, cwd=ROOT)
+        create = [
+            docker, "create", "--name", name, "--label", "shox.toolchain.pool=true",
+            "--label", f"shox.toolchain.worktree={pool_identity()}",
+            "--user", f"{uid}:{gid}", "-e", "WINEARCH=win32",
+            "-e", "WINEPREFIX=/wineprefix", "-e", "HOME=/tmp",
+            "-e", "XDG_CACHE_HOME=/tmp", "-e", "XDG_CONFIG_HOME=/tmp",
+            "-v", f"{volume}:/wineprefix", "-v", f"{ROOT}:/workspace:z",
+        ]
+        if mount_toolchain:
+            create.extend(["-v", f"{toolchain_root}:/workspace/toolchain:ro,z"])
+        create.extend(["-w", str(CONTAINER_ROOT), "--entrypoint", "/bin/sh", IMAGE,
+                       "-c", "while :; do sleep 3600; done"])
+        subprocess.run(create, check=True, cwd=ROOT, stdout=subprocess.DEVNULL)
+    running = subprocess.run(
+        [docker, "inspect", "--format", "{{.State.Running}}", name],
+        check=True, capture_output=True, text=True,
+    ).stdout.strip() == "true"
+    if not running:
+        subprocess.run([docker, "start", name], check=True, stdout=subprocess.DEVNULL)
+    if created:
+        result = pool_wine(
+            name, "/workspace/toolchain/eegcc_sn_v2.73a/bin/ee-gcc295.exe", ["--version"]
+        )
+        if result.returncode:
+            raise subprocess.CalledProcessError(result.returncode, [name, "ee-gcc295.exe", "--version"])
+        pool_start_wineserver(name)
+    return name, volume, created
+
+
+def pool_wine(name: str, executable: str, args: list[str], cwd: str | None = None) -> subprocess.CompletedProcess:
+    docker = shutil.which("docker")
+    assert docker
+    cmd = [docker, "exec", "--user", f"{os.getuid()}:{os.getgid()}",
+           "--env", "WINEARCH=win32", "--env", "WINEPREFIX=/wineprefix",
+           "--env", "HOME=/tmp", "--env", "XDG_CACHE_HOME=/tmp",
+           "--env", "XDG_CONFIG_HOME=/tmp"]
+    if cwd:
+        cmd.extend(["--workdir", cwd])
+    cmd.extend([name, "wine", executable, *args])
+    return subprocess.run(cmd, cwd=ROOT)
+
+
+def pool_start_wineserver(name: str) -> None:
+    docker = shutil.which("docker")
+    assert docker
+    prefix = [docker, "exec", "--user", f"{os.getuid()}:{os.getgid()}",
+              "--env", "WINEARCH=win32", "--env", "WINEPREFIX=/wineprefix",
+              "--env", "HOME=/tmp", name, "wineserver"]
+    # Wine exits its server after idle clients disappear. Restart it in
+    # persistent mode while this worker's cross-process lock is held.
+    stopped = subprocess.run([*prefix, "-k"], cwd=ROOT, stdout=subprocess.DEVNULL,
+                             stderr=subprocess.PIPE)
+    if stopped.returncode not in (0, 1):
+        raise subprocess.CalledProcessError(stopped.returncode, stopped.args,
+                                            stderr=stopped.stderr)
+    subprocess.run([*prefix, "-p"], check=True, cwd=ROOT, stdout=subprocess.DEVNULL)
+
+
+def run_with_pool(tool: str, args: list[str], host_cwd: Path) -> int:
+    if POOL_SIZE < 1 or POOL_SIZE > 64:
+        raise ValueError("SHOX_TOOLCHAIN_POOL_SIZE must be between 1 and 64")
+    toolchain_root, _ = toolchain_location()
+    toolchain_bin = toolchain_root / TOOLCHAIN_RELATIVE
+    executable = (toolchain_bin / tool).resolve()
+    if executable.parent != toolchain_bin.resolve() or executable.suffix.lower() != ".exe":
+        raise ValueError(f"Unknown SN Systems executable: {tool}")
+    if not executable.is_file() or not os.access(executable, os.R_OK):
+        raise FileNotFoundError(f"SN Systems executable not found or unreadable: {executable}")
+    try:
+        relative_cwd = host_cwd.resolve().relative_to(ROOT)
+    except ValueError as exc:
+        raise ValueError(f"Working directory is outside the mounted repository: {host_cwd}") from exc
+    mapped_args = [map_path(arg, host_cwd) for arg in args]
+    wine_executable = f"/workspace/toolchain/{TOOLCHAIN_RELATIVE.as_posix()}/{tool}"
+    state_dir = Path(tempfile.gettempdir()) / f"shox-winepool-{os.getuid()}-{pool_identity()}"
+    state_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
+    while True:
+        for index in range(POOL_SIZE):
+            _, _, lock_path = pool_paths(index)
+            lock = lock_path.open("a")
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                lock.close()
+                continue
+            try:
+                name, _, _ = pool_ensure_worker(index)
+                cwd = (CONTAINER_ROOT / relative_cwd).as_posix()
+                return pool_wine(name, wine_executable, mapped_args, cwd).returncode
+            finally:
+                fcntl.flock(lock, fcntl.LOCK_UN)
+                lock.close()
+        time.sleep(0.05)
+
+
+def pool_command(action: str) -> int:
+    if POOL_SIZE < 1 or POOL_SIZE > 64:
+        raise ValueError("SHOX_TOOLCHAIN_POOL_SIZE must be between 1 and 64")
+    docker = shutil.which("docker")
+    if not docker:
+        raise RuntimeError("Docker is required for the docker-wine-pool toolchain backend")
+    if action == "init":
+        failures = []
+        with ThreadPoolExecutor(max_workers=POOL_SIZE) as executor:
+            futures = {executor.submit(pool_initialize_worker, index): index
+                       for index in range(POOL_SIZE)}
+            for future in as_completed(futures):
+                index = futures[future]
+                try:
+                    name, volume = future.result()
+                    print(f"worker {index}: ready ({name}; prefix {volume})")
+                except Exception as exc:
+                    failures.append((index, exc))
+        if failures:
+            details = "; ".join(f"worker {index}: {error}" for index, error in failures)
+            raise RuntimeError(f"Pool initialization failed: {details}")
+        return 0
+    for index in range(POOL_SIZE):
+        _, name, volume, lock_path = pool_docker_base(index)
+        with lock_path.open("a") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            if action == "status":
+                result = subprocess.run(
+                    [docker, "inspect", "--format", "{{.State.Status}}", name],
+                    capture_output=True, text=True,
+                )
+                print(f"worker {index}: {result.stdout.strip() or 'not created'} ({name})")
+            elif action == "shutdown":
+                result = subprocess.run([docker, "rm", "-f", name], capture_output=True, text=True)
+                if result.returncode and "no such container" not in result.stderr.lower():
+                    raise RuntimeError(result.stderr.strip())
+                print(f"worker {index}: stopped; prefix retained ({volume})")
+            fcntl.flock(lock, fcntl.LOCK_UN)
+    return 0
+
+
+def pool_initialize_worker(index: int) -> tuple[str, str]:
+    _, name, volume, lock_path = pool_docker_base(index)
+    with lock_path.open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        pool_initialize_unlocked(index)
+        return name, volume
+
+
+def pool_initialize_unlocked(index: int) -> None:
+    name, _, created = pool_ensure_worker(index)
+    if created:
+        return
+    result = pool_wine(name, "/workspace/toolchain/eegcc_sn_v2.73a/bin/ee-gcc295.exe", ["--version"])
+    if result.returncode:
+        raise subprocess.CalledProcessError(result.returncode, [name, "ee-gcc295.exe", "--version"])
+    pool_start_wineserver(name)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("tool", help="SN Systems executable basename, e.g. ee-gcc295.exe")
+    parser.add_argument("--pool-action", choices=("init", "status", "shutdown"),
+                        help="manage persistent docker-wine-pool workers")
+    parser.add_argument("tool", nargs="?", help="SN Systems executable basename, e.g. ee-gcc295.exe")
     parser.add_argument("args", nargs=argparse.REMAINDER, help="Arguments forwarded to the executable")
     args = parser.parse_args()
 
     try:
+        if args.pool_action:
+            return pool_command(args.pool_action)
+        if not args.tool:
+            parser.error("tool is required unless --pool-action is used")
+        if BACKEND == "docker-wine-pool":
+            return run_with_pool(args.tool, args.args, Path.cwd())
         if BACKEND != "docker-wine":
             raise ValueError(
-                f"Unsupported toolchain backend {BACKEND!r}; available: docker-wine"
+                f"Unsupported toolchain backend {BACKEND!r}; available: docker-wine, docker-wine-pool"
             )
         command = container_command(args.tool, args.args, Path.cwd())
         return run_with_prefix(command)
-    except (OSError, ValueError, RuntimeError, subprocess.CalledProcessError) as exc:
+    except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as exc:
         print(f"SN tool runner: {exc}", file=sys.stderr)
         return 1
 

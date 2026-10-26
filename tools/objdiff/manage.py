@@ -3,8 +3,11 @@
 """Manage Shox retail decompilation functions and objdiff configuration."""
 
 import argparse
+from contextlib import closing
 import json
 import re
+import sqlite3
+import subprocess
 import sys
 from pathlib import Path, PurePosixPath
 try:
@@ -322,6 +325,107 @@ def sync(manifest):
     write_if_changed(OBJDIFF, objdiff_text)
 
 
+def git_output(root, *args):
+    result = subprocess.run(
+        ["git", *args], cwd=root, check=True, text=True, capture_output=True
+    )
+    return result.stdout.strip()
+
+
+def completed_claims(db_path, source_ref, base_ref, root):
+    """Return completed claims committed on source_ref since base_ref."""
+    db_path = Path(db_path).resolve()
+    if not db_path.is_file():
+        raise FileNotFoundError(f"Claim database not found: {db_path}")
+    uri = f"file:{db_path.as_posix()}?mode=ro"
+    with closing(sqlite3.connect(uri, uri=True)) as db:
+        columns = {row[1] for row in db.execute("PRAGMA table_info(functions)")}
+        required = {"name", "address", "size", "state", "commit_sha"}
+        if not required <= columns:
+            raise ValueError("Claim database has an unsupported functions schema")
+        claims = db.execute(
+            "SELECT name,address,size,commit_sha FROM functions "
+            "WHERE state='completed' AND commit_sha IS NOT NULL"
+        ).fetchall()
+
+    commits = set(git_output(root, "rev-list", f"{base_ref}..{source_ref}").splitlines())
+    pending = []
+    for name, address, size, commit in claims:
+        if commit not in commits:
+            continue
+        if not NAME_RE.fullmatch(name) or address != int(name[5:], 16) or size <= 0:
+            raise ValueError(f"Invalid completed claim boundary: {name}")
+        source = retail_source_path(address)
+        changed = git_output(
+            root, "diff-tree", "--root", "--no-commit-id", "--name-only", "-r", commit
+        ).splitlines()
+        if changed != [source]:
+            raise ValueError(f"{name}: claim commit must change only {source}; got {changed}")
+        title = git_output(root, "show", "-s", "--format=%s", commit)
+        expected_title = f"feat: {name} {size}/{size} bytes exact-matched"
+        if title != expected_title:
+            raise ValueError(f"{name}: unexpected completion commit title: {title!r}")
+        commit_blob = git_output(root, "rev-parse", f"{commit}:{source}")
+        ref_blob = git_output(root, "rev-parse", f"{source_ref}:{source}")
+        if commit_blob != ref_blob:
+            raise ValueError(f"{name}: source at {source_ref} differs from its claim commit")
+        if not (Path(root) / source).is_file():
+            raise FileNotFoundError(f"{name}: source is missing from the registration checkout")
+        pending.append({
+            "name": name,
+            "address": f"0x{address:08X}",
+            "size": f"0x{size:X}",
+            "source": source,
+            "commit": commit,
+        })
+    return sorted(pending, key=lambda item: int(item["address"], 16))
+
+
+def register_completed(manifest, claims):
+    """Add already committed sources to the manifest in one canonical pass."""
+    validate(manifest)
+    updated = json.loads(json.dumps(manifest))
+    existing = {entry["name"] for entry in updated["functions"]}
+    additions = []
+    for claim in claims:
+        name = claim["name"]
+        if name in existing:
+            raise ValueError(f"Already registered: {name}")
+        address = int(claim["address"], 16)
+        size = int(claim["size"], 16)
+        canonical = make_function_entry(address, size)
+        if claim["source"] != canonical["source"]:
+            raise ValueError(f"{name}: noncanonical source path {claim['source']!r}")
+        if canonical["name"] != name:
+            raise ValueError(f"{name}: claim name/address mismatch")
+        source = safe_path(claim["source"], f"{name}.source")
+        if not source.is_file():
+            raise FileNotFoundError(f"Missing completed source: {claim['source']}")
+        additions.append(canonical)
+        existing.add(name)
+
+    additions.sort(key=lambda item: int(item["address"], 16))
+    updated["functions"].extend(additions)
+    updated["functions"].sort(key=lambda item: int(item["address"], 16))
+    validate(updated)
+    return updated, additions
+
+
+def write_registration(manifest, claims):
+    """Validate and write one bulk registration, syncing generated files once."""
+    updated, additions = register_completed(manifest, claims)
+    if not additions:
+        print("No completed claims to register")
+        return updated, additions
+    MANIFEST.write_text(
+        json.dumps(updated, indent=2) + "\n", encoding="utf-8", newline="\n"
+    )
+    sync(updated)
+    print(f"Registered {len(additions)} completed functions")
+    print(f"Bytes: {sum(int(item['size'], 16) for item in additions)}")
+    return updated, additions
+
+
 def add_function(manifest, address, size):
     # Validate the existing registry before changing anything.
     validate(manifest)
@@ -405,6 +509,11 @@ def main():
     add.add_argument("address", type=lambda x: int(x, 0))
     add.add_argument("size", type=lambda x: int(x, 0))
 
+    bulk = sub.add_parser("register-completed")
+    bulk.add_argument("--db", help="read-only claim database; defaults to Git common dir")
+    bulk.add_argument("--source-ref", default="decomp/luna")
+    bulk.add_argument("--base-ref", default="main")
+
     args = parser.parse_args()
 
     try:
@@ -437,9 +546,15 @@ def main():
         elif args.command == "add":
             add_function(manifest, args.address, args.size)
 
+        elif args.command == "register-completed":
+            common = Path(git_output(ROOT, "rev-parse", "--path-format=absolute", "--git-common-dir"))
+            db_path = args.db or common / "shox-function-claims.sqlite3"
+            claims = completed_claims(db_path, args.source_ref, args.base_ref, ROOT)
+            write_registration(manifest, claims)
+
     except (
         OSError, ValueError, KeyError, TypeError,
-        json.JSONDecodeError,
+        json.JSONDecodeError, sqlite3.Error, subprocess.CalledProcessError,
     ) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
