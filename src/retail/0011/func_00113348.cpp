@@ -1,0 +1,15 @@
+struct Handler {
+    unsigned char unused[88];
+    short offset;
+    short padding;
+    void (*callback)(void *);
+};
+struct Record {
+    unsigned char unused[20];
+    Handler *handler;
+};
+extern "C" void func_00113348(Record *record)
+{
+    Handler *handler = record->handler;
+    handler->callback((char *)record + handler->offset);
+}
