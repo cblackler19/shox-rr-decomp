@@ -104,9 +104,9 @@ SHOX_OBJDIFF=/path/to/objdiff-cli
 "$SHOX_OBJDIFF" report generate -p . -o /tmp/shox-report.json -f json
 ```
 
-The `measures` section should retain 406 matched functions and 14,892 matched code bytes. Review the generated report before intentionally replacing `reports/retail/report.json`.
+The `measures` section should retain the tracked report's 1,423 matched functions and 37,372 matched code bytes. Review the generated report before intentionally replacing `reports/retail/report.json`.
 
-Expected inventory: 7,408 functions; 1,905,072 function bytes; 1,905,072 covered bytes; 13,844 uncovered bytes; 3,338 gaps; 0 errors. The current registered ByteMatch baseline is 406 functions and 14,892 matched bytes. Report generation/publication is performed by the project’s normal native objdiff/ByteMatch workflow.
+Expected inventory: 7,408 functions; 1,905,072 function bytes; 1,905,072 covered bytes; 13,844 uncovered bytes; 3,338 gaps; 0 errors. The current registered ByteMatch report contains 1,423 matched functions and 37,372 matched bytes. Report generation/publication is performed by the project’s normal native objdiff/ByteMatch workflow.
 
 For the complete retail assembly reconstruction, `python3 tools/build.py --retail` uses the same wrapper for the assembler and linker. It also needs the local retail ELF, Splat inputs, and toolchain. Build outputs are written under ignored `build/retail/`.
 
